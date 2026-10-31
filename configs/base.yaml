@@ -1,0 +1,36 @@
+# Base configuration. Every value traces to a decision in SIMULATION_DESIGN.md (tag in comment).
+# Experiment configs override only what they change.
+
+sim:
+  dt: 0.001              # [s] physics step, 1000 Hz (D5)
+  integrator: RK4        # no contacts -> RK4 for accuracy (D5)
+  gravity: 9.81          # [m/s^2]
+  contacts: false        # no ground contact (D9, B6)
+  start_altitude: 2.0    # [m] (D9, B6)
+
+rates:
+  rate_loop_hz: 500      # inner body-rate controller (D5)
+  outer_loop_hz: 100     # main benchmark controller / policy (D5)
+
+drone:                   # Skydio X2, MuJoCo Menagerie (D2)
+  model: skydio_x2
+  rotor_thrust_max: 13.0 # [N] per rotor (D2, D8)
+  motor_tau: 0.0         # [s] 0 = ideal motors; 0.035 in main benchmark (D8)
+
+cable:
+  model: C1              # C1..C6 (D3)
+  length: 0.5            # [m] nominal (D7)
+  EA: 125.0              # [N] axial stiffness k*L, constant across lengths (D3, A5)
+  cL: 0.875              # [N s] damping c*L, constant across lengths (D3, A5)
+  linear_density: 0.010  # [kg/m] for C4-C6 (D3, B1)
+  attach_offset_z: 0.0   # [m] below drone CoM; 0 or -0.077 (D6, A3)
+
+payload:
+  model: P1              # P1 point mass, P3 rigid cylinder (D6)
+  mass: 0.2              # [kg] nominal (D6)
+
+realism:
+  level: L0              # L0 ideal, L1 realistic, L2 sensorless payload (D10)
+  fluid_drag: false      # MuJoCo fluid model on in L1/L2 (D10)
+
+seed: 0

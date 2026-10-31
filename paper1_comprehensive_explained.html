@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper 1: Comprehensive Explained Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            background: #f8f9fa;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media print {
+            body { padding: 20px; }
+            .page-break { page-break-after: always; }
+            .sticky-nav { position: static !important; }
+        }
+
+        .sticky-nav {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: white;
+            border: 2px solid #2c7bb6;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .sticky-nav h4 {
+            color: #2c7bb6;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sticky-nav ul {
+            list-style: none;
+            font-size: 0.85em;
+        }
+
+        .sticky-nav li {
+            margin-bottom: 5px;
+        }
+
+        .sticky-nav a {
+            color: #2c7bb6;
+            text-decoration: none;
+            display: block;
+            padding: 3px 0;
+        }
+
+        .sticky-nav a:hover {
+            color: #1a5490;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 300px;
+        }
+
+        h1 {
+            color: #1a3a52;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            border-bottom: 4px solid #2c7bb6;
+            padding-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2c7bb6;
+            font-size: 2em;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2c7bb6;
+            padding-left: 20px;
+        }
+
+        h3 {
+            color: #2980b9;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            color: #555;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .authors {
+            background: #ecf0f1;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 5px solid #2c7bb6;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .concept-box {
+            background: #e8f4f8;
+            border-left: 5px solid #2c7bb6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .concept-box h4 {
+            color: #1a5490;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 5px solid #f39c12;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box h4 {
+            color: #d68910;
+            margin-top: 0;
+        }
+
+        .success-box {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box h4 {
+            color: #1e8449;
+            margin-top: 0;
+        }
+
+        .equation-box {
+            background: #f5f5f5;
+            border: 2px solid #bdc3c7;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .step-by-step {
+            background: #fafafa;
+            border-left: 5px solid #9b59b6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .step {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dotted #bdc3c7;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #9b59b6;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f0f3f4;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 2px dashed #95a5a6;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #2c7bb6;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .notation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .notation-table th,
+        .notation-table td {
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            text-align: left;
+        }
+
+        .notation-table th {
+            background: #34495e;
+            color: white;
+        }
+
+        .notation-table tr:nth-child(even) {
+            background: #ecf0f1;
+        }
+
+        .intuition {
+            background: #fff9e6;
+            border-left: 5px solid #e67e22;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .intuition strong {
+            color: #d35400;
+        }
+
+        .example-box {
+            background: #f0fff0;
+            border-left: 5px solid #27ae60;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example-box h4 {
+            color: #1e8449;
+            margin-top: 0;
+        }
+
+        .key-insight {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1em;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        .challenge {
+            background: #fadbd8;
+            border-left: 5px solid #c0392b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .challenge strong {
+            color: #922b21;
+        }
+
+        .footnote {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #bdc3c7;
+        }
+
+        .hr-line {
+            border: none;
+            border-top: 3px solid #bdc3c7;
+            margin: 40px 0;
+        }
+
+        .section-summary {
+            background: #e8f8f5;
+            border-left: 5px solid #16a085;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .section-summary h4 {
+            color: #0e6251;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sticky-nav">
+        <h4>📚 Navigation</h4>
+        <ul>
+            <li><a href="#title">Paper Overview</a></li>
+            <li><a href="#part1">Part 1: The Problem</a></li>
+            <li><a href="#part2">Part 2: System Model</a></li>
+            <li><a href="#part3">Part 3: Dynamics</a></li>
+            <li><a href="#part4">Part 4: Differential Flatness</a></li>
+            <li><a href="#part5">Part 5: Geometric Control</a></li>
+            <li><a href="#part6">Part 6: Stability</a></li>
+            <li><a href="#part7">Part 7: Trajectory Generation</a></li>
+            <li><a href="#part8">Part 8: Hybrid Dynamics</a></li>
+            <li><a href="#part9">Part 9: Contributions</a></li>
+            <li><a href="#part10">Part 10: Practical Use</a></li>
+            <li><a href="#part11">Part 11: Extensions</a></li>
+            <li><a href="#part12">Part 12: Glossary</a></li>
+            <li><a href="#summary">Summary</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div id="title">
+            <h1>Geometric Control and Differential Flatness of a Quadrotor with a Cable-Suspended Load</h1>
+            <p class="subtitle">A Comprehensive, Deeply-Explained Edition</p>
+
+            <div class="authors">
+                <p><strong>Authors:</strong> Koushil Sreenath, Taeyoung Lee, Vijay Kumar</p>
+                <p><strong>Venue:</strong> 52nd IEEE Conference on Decision and Control (CDC), December 2013, Florence, Italy</p>
+                <p><strong>Citation:</strong> K. Sreenath, T. Lee, and V. Kumar, "Geometric control and differential flatness of a quadrotor UAV with a cable-suspended load," in <em>Proceedings of the IEEE Conference on Decision and Control</em>, 2013, pp. 2269–2274.</p>
+                <p><strong>Access:</strong> <a href="https://arxiv.org/pdf/1309.6717" target="_blank">https://arxiv.org/pdf/1309.6717</a></p>
+            </div>
+        </div>
+
+        <hr class="hr-line">
+
+        <section id="part1">
+            <h2>PART 1: THE PROBLEM - WHY IS THIS HARD?</h2>
+
+            <h3>1.1 The Challenge: Cable-Suspended Payload Control</h3>
+
+            <p>Imagine you're the flight controller for a delivery drone. Your task: pick up a package and deliver it to a specific location. Simple, right? Now add a twist: instead of carrying the package directly, you must suspend it from a cable below your drone. As you accelerate, the package swings like a pendulum. As you turn, it oscillates. Your goal: bring the package to the target location while minimizing swinging.</p>
+
+            <div class="concept-box">
+                <h4>🎯 Core Problem Statement</h4>
+                <p>Design a control law for a quadrotor carrying a cable-suspended payload such that the payload position tracks a desired trajectory, despite the system being underactuated and the payload dynamics coupling with the quadrotor dynamics.</p>
+            </div>
+
+            <h3>1.2 What Makes This Difficult?</h3>
+
+            <div class="diagram">
+QUADROTOR (controlled)
+    ↓
+  [||||]  ← 4 thrusts (control inputs)
+    |
+ CABLE ← Can only pull, not push
+    |
+ PAYLOAD (wants to track desired path)
+            </div>
+
+            <h4>Challenge #1: Underactuation</h4>
+            <p>A quadrotor alone has <strong>6 DOF</strong> (3 position, 3 rotation) and 4 control inputs. Adding a payload as a point mass adds <strong>3 more DOF</strong> (payload position), giving <strong>8 total DOF</strong>.</p>
+
+            <div class="equation-box">
+System DOF: 8 (3 quad position + 3 quad rotation + 2 cable direction + 3 payload position - 3 cable constraint)
+Control Inputs: 4 (motor thrusts)
+Underactuation Degree: 8 - 4 = 4
+
+This means 4 DOF cannot be directly controlled!
+            </div>
+
+            <p>Compare this to a classical system like a simple pendulum or cart-pole - those are 2 or 3 DOF underactuated systems. This is significantly more complex.</p>
+
+            <h4>Challenge #2: Cable Dynamics Coupling</h4>
+            <p>The payload is not independent from the quadrotor. They're connected by the cable tension. When the quadrotor accelerates, it pulls on the cable, creating tension. This tension affects the payload acceleration. This creates a <strong>coupled nonlinear system</strong> - you can't control the quadrotor and payload separately.</p>
+
+            <h4>Challenge #3: Non-Measurable States</h4>
+            <p>In a practical system:</p>
+            <ul>
+                <li>You can measure quadrotor position (GPS/IMU) ✓</li>
+                <li>You can measure quadrotor attitude (IMU) ✓</li>
+                <li>You can measure quadrotor velocity (IMU/optical flow) ✓</li>
+                <li>You can measure payload position (camera/GPS) ✓</li>
+                <li>❌ Cable angle is NOT directly measured</li>
+                <li>❌ Cable tension is NOT directly measured</li>
+            </ul>
+
+            <p>This means you must <strong>infer</strong> cable angle from position measurements, which is error-prone and introduces delays.</p>
+
+            <h4>Challenge #4: Hybrid Dynamics</h4>
+            <p>A cable can only pull, not push. So cable tension must satisfy: $T \geq 0$</p>
+
+            <p>What happens if you command a maneuver that would require negative tension (pushing the cable)? The cable goes slack, and the payload enters <strong>free-fall</strong>. This is a discrete mode change in the system dynamics - a hybrid system!</p>
+
+            <div class="intuition">
+                <strong>Intuition:</strong> Think of this like throwing a ball while holding a rope. You can make the rope pull the ball up (cable taut), but you can't make the rope push it down. If you try to lower your hand too fast, the rope goes slack and the ball free-falls.
+            </div>
+
+            <h3>1.3 Why Classical Control Doesn't Work</h3>
+
+            <p><strong>Classical Approach:</strong> Use PID control on each DOF independently.</p>
+
+            <p><strong>Problem:</strong> The system is nonlinear and coupled. A quadrotor is a <strong>highly nonlinear</strong> system where small angle approximations don't work:</p>
+
+            <ul>
+                <li>Thrust direction depends on attitude (nonlinear coupling)</li>
+                <li>Attitude dynamics are nonlinear in angular velocity</li>
+                <li>Cable-payload coupling creates nonlinear forces</li>
+            </ul>
+
+            <p>PID control would oscillate wildly and likely fail to track the payload trajectory.</p>
+
+            <h3>1.4 The Paper's Solution: Differential Flatness</h3>
+
+            <p>Instead of fighting the underactuation, this paper exploits the system's <strong>hidden structure</strong>: differential flatness.</p>
+
+            <div class="key-insight">
+                The system is DIFFERENTIALLY FLAT with the payload position and yaw angle as flat outputs. This means trajectory generation becomes a purely geometric problem - no dynamics to solve!
+            </div>
+
+            <div class="section-summary">
+                <h4>Part 1 Summary</h4>
+                <ul>
+                    <li><strong>The Problem:</strong> Control an 8-DOF underactuated system with only 4 control inputs</li>
+                    <li><strong>The Difficulty:</strong> Nonlinear coupling, hybrid dynamics, unmeasurable states</li>
+                    <li><strong>The Classical Solution Fails:</strong> Underactuated nonlinear systems require special techniques</li>
+                    <li><strong>This Paper's Key Insight:</strong> Use differential flatness to bypass dynamics</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part2">
+            <h2>PART 2: SYSTEM MODEL - SETTING UP THE MATHEMATICS</h2>
+
+            <h3>2.1 Configuration Space: Where Do Things Live?</h3>
+
+            <p>Before we write any equations, we need to understand the "space" our system lives in. This is not just 3D Euclidean space!</p>
+
+            <h4>What is a Configuration Space?</h4>
+            <p>A configuration space is the set of all possible states the system can be in. For our quadrotor-payload system, we need to describe:</p>
+            <ul>
+                <li>Where the quadrotor is in 3D space (position)</li>
+                <li>Which way the quadrotor is facing (orientation)</li>
+                <li>Where the payload is in 3D space (position)</li>
+                <li>The direction the cable points (angle)</li>
+            </ul>
+
+            <div class="concept-box">
+                <h4>Key Insight: Non-Euclidean Mathematics</h4>
+                <p>Most control systems assume a vector space (Euclidean). But rotations don't form a vector space! Adding two rotations doesn't give another rotation in the same linear way. This is why we need <strong>Lie Group Mathematics</strong> - the mathematics of manifolds and non-Euclidean spaces.</p>
+            </div>
+
+            <h4>Component 1: Quadrotor Configuration in SE(3)</h4>
+
+            <p><strong>SE(3)</strong> = Special Euclidean Group = "Rigid body motions in 3D"</p>
+
+            <p><strong>Position Part:</strong> $\mathbf{q}_m = (x_m, y_m, z_m) \in \mathbb{R}^3$</p>
+            <ul>
+                <li>The center of mass of the quadrotor</li>
+                <li>Standard 3D coordinates</li>
+                <li>Contributes 3 DOF</li>
+            </ul>
+
+            <p><strong>Orientation Part:</strong> $\mathbf{R}_m \in SO(3)$</p>
+            <ul>
+                <li><strong>SO(3)</strong> = Special Orthogonal group = "3D rotations"</li>
+                <li>Represented as a 3×3 rotation matrix</li>
+                <li>Describes which way the quadrotor is facing</li>
+                <li>Contributes 3 DOF</li>
+                <li><strong>Key Property:</strong> Rotations are NOT vectors - they form a curved manifold</li>
+            </ul>
+
+            <div class="diagram">
+Rotation Matrix: R_m = [r11  r12  r13]
+                        [r21  r22  r23]
+                        [r31  r32  r33]
+
+Properties:
+- R^T * R = I (orthogonal)
+- det(R) = 1 (orientation-preserving)
+- NOT in vector space (curved manifold SO(3))
+            </div>
+
+            <h4>Component 2: Payload Position in ℝ³</h4>
+
+            <p>The payload position is straightforward: $\mathbf{q}_p = (x_p, y_p, z_p) \in \mathbb{R}^3$</p>
+
+            <p>This contributes 3 DOF, but it's constrained by the cable.</p>
+
+            <h4>Component 3: Cable Direction on S²</h4>
+
+            <p>The cable doesn't point randomly - it points from the quadrotor toward the payload. We represent this direction as a unit vector: $\boldsymbol{\sigma} \in S^2$</p>
+
+            <p><strong>S²</strong> = 2-sphere = "Unit vectors in 3D" = Set of all $(x, y, z)$ with $x^2 + y^2 + z^2 = 1$</p>
+
+            <div class="diagram">
+Cable Constraint:
+q_p = q_m + ℓ·σ
+
+Where:
+- q_p: payload position (ℝ³)
+- q_m: quadrotor position (ℝ³)
+- ℓ: cable length (scalar)
+- σ: cable direction (S², unit vector)
+
+This reduces 3 DOF to 2 DOF because of the unit magnitude constraint!
+            </div>
+
+            <h4>Why S² and Not ℝ³?</h4>
+            <p>The cable direction must be a unit vector. If we parameterize it in 3D space with the constraint $|\boldsymbol{\sigma}| = 1$, we're left with only 2 independent parameters. Geometrically, this is the surface of a unit sphere - hence S².</p>
+
+            <div class="intuition">
+                <strong>Intuition:</strong> Just as a 1-sphere (circle) is the set of unit vectors in 2D, a 2-sphere (globe) is the set of unit vectors in 3D. The cable can point in any direction on this sphere, but there are only 2 independent directions you can specify (e.g., latitude and longitude, or two angles).
+            </div>
+
+            <h3>2.2 Counting DOF: The 8-DOF System</h3>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Space</th>
+                        <th>DOF</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Quadrotor Position</td>
+                        <td>ℝ³</td>
+                        <td>3</td>
+                        <td>x, y, z coordinates</td>
+                    </tr>
+                    <tr>
+                        <td>Quadrotor Orientation</td>
+                        <td>SO(3)</td>
+                        <td>3</td>
+                        <td>Roll, pitch, yaw</td>
+                    </tr>
+                    <tr>
+                        <td>Cable Direction</td>
+                        <td>S²</td>
+                        <td>2</td>
+                        <td>2 angles (constrained by unit magnitude)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TOTAL</strong></td>
+                        <td><strong>SE(3) × S²</strong></td>
+                        <td><strong>8</strong></td>
+                        <td><strong>Full system</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Note:</strong> The payload position is NOT a separate DOF - it's determined by $\mathbf{q}_p = \mathbf{q}_m + \ell \boldsymbol{\sigma}$ (cable constraint).</p>
+
+            <h3>2.3 The Cable Constraint Explained</h3>
+
+            <p>The cable connects quadrotor to payload with constant length $\ell > 0$:</p>
+
+            <div class="equation-box">
+q_p = q_m + ℓ·σ
+
+Where σ is the unit vector pointing from quadrotor to payload:
+σ = (q_p - q_m) / |q_p - q_m| = (q_p - q_m) / ℓ
+
+Therefore:
+|q_p - q_m| = ℓ
+            </div>
+
+            <h4>What Does This Constraint Do?</h4>
+            <ul>
+                <li>It <strong>couples</strong> quadrotor position and cable direction</li>
+                <li>If you move the quadrotor, the cable direction must change to maintain the constraint</li>
+                <li>If the cable direction changes, the payload position changes</li>
+                <li>This is why the system is so tightly coupled!</li>
+            </ul>
+
+            <h3>2.4 Configuration Space Summary: SE(3) × S²</h3>
+
+            <div class="equation-box">
+Configuration Space = {(q_m, R_m, σ) : q_m ∈ ℝ³, R_m ∈ SO(3), σ ∈ S²}
+
+Total DOF = 3 + 3 + 2 = 8
+            </div>
+
+            <div class="section-summary">
+                <h4>Part 2 Summary</h4>
+                <ul>
+                    <li>Quadrotor lives in <strong>SE(3)</strong> (position in ℝ³ + orientation in SO(3))</li>
+                    <li>Cable direction lives on <strong>S²</strong> (unit sphere)</li>
+                    <li>Total system: <strong>8 DOF</strong> in the space <strong>SE(3) × S²</strong></li>
+                    <li>Payload position is <strong>not</strong> an independent DOF - it's computed from cable constraint</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part3">
+            <h2>PART 3: SYSTEM DYNAMICS - HOW THINGS MOVE</h2>
+
+            <h3>3.1 Introduction to Lagrangian Mechanics</h3>
+
+            <p>We'll derive the equations of motion using <strong>Lagrangian Mechanics</strong> - a systematic way to write dynamics using energy.</p>
+
+            <div class="concept-box">
+                <h4>Why Lagrangian Mechanics?</h4>
+                <p>Instead of drawing free-body diagrams and writing Newton's laws for each piece, we use:</p>
+                <p><strong>L = T - V</strong></p>
+                <p>where T = kinetic energy, V = potential energy. The equations of motion fall out automatically!</p>
+            </div>
+
+            <h3>3.2 Quadrotor Translational Dynamics</h3>
+
+            <h4>Forces Acting on Quadrotor:</h4>
+            <ul>
+                <li><strong>Gravity:</strong> $-m_m g \mathbf{e}_3$ (downward, where $\mathbf{e}_3 = [0, 0, 1]^T$)</li>
+                <li><strong>Thrust from Motors:</strong> $\mathbf{R}_m \mathbf{F}_{thrust}$ (in quadrotor's body frame, rotated to world frame)</li>
+                <li><strong>Cable Tension:</strong> $-T \boldsymbol{\sigma}$ (reaction from cable pulling on quadrotor)</li>
+            </ul>
+
+            <div class="diagram">
+              Thrust vector F (body frame)
+                    ↑
+                   /|\
+                  / | \
+    Four motors ←---◊---→ Rotated to world frame by R_m
+                  \ | /
+                   \|/
+                    ↓
+                Gravity
+                   |
+              Cable tension
+            </div>
+
+            <h4>Newton's Second Law for Quadrotor:</h4>
+
+            <div class="equation-box">
+m_m * ẍ_m = -m_m*g*e_3 + R_m*F_thrust - T*σ
+
+Breaking it down:
+- m_m: mass of quadrotor
+- ẍ_m: acceleration of quadrotor center of mass
+- e_3: [0, 0, 1]ᵀ (down direction)
+- R_m: rotation matrix (describes attitude)
+- F_thrust: thrust vector in body frame
+- T: cable tension scalar
+- σ: unit vector pointing to payload
+            </div>
+
+            <h4>Key Insight: Attitude Affects Thrust Direction</h4>
+            <p>The thrust vector $\mathbf{F}_{thrust}$ is created by the 4 motors in the quadrotor's body frame. To find the effect in the world frame, you must rotate it: $\mathbf{R}_m \mathbf{F}_{thrust}$</p>
+
+            <p><strong>This is why attitude control is crucial:</strong> You can't make the quadrotor move horizontally without tilting it (changing $\mathbf{R}_m$)!</p>
+
+            <h3>3.3 Quadrotor Rotational Dynamics</h3>
+
+            <h4>Torques Acting on Quadrotor:</h4>
+            <ul>
+                <li><strong>Motor Torques:</strong> Differential motor speeds create torques (control input)</li>
+                <li><strong>Gyroscopic Effects:</strong> Angular velocity creates centrifugal forces</li>
+            </ul>
+
+            <h4>Euler's Rotational Equation (on SO(3)):</h4>
+
+            <div class="equation-box">
+I_quad * ω̇_m = -ω_m × (I_quad * ω_m) + τ_control
+
+Where:
+- I_quad: moment of inertia tensor (3×3 matrix)
+- ω_m: angular velocity vector (body frame)
+- ω_m × (I_quad * ω_m): gyroscopic effect (nonlinear!)
+- τ_control: control torque from differential motor thrusts
+            </div>
+
+            <h4>Kinematics: How Rotation Matrix Changes</h4>
+
+            <p>The rotation matrix evolves according to:</p>
+
+            <div class="equation-box">
+dR_m/dt = R_m * [ω_m]_×
+
+Where [ω_m]_× is the skew-symmetric matrix:
+[ω_m]_× = [  0   -ω_z   ω_y ]
+          [ ω_z   0   -ω_x ]
+          [-ω_y  ω_x    0  ]
+
+This matrix captures the infinitesimal rotation.
+            </div>
+
+            <h3>3.4 Payload Dynamics</h3>
+
+            <h4>Forces Acting on Payload:</h4>
+            <ul>
+                <li><strong>Gravity:</strong> $-m_p g \mathbf{e}_3$</li>
+                <li><strong>Cable Tension:</strong> $T \boldsymbol{\sigma}$ (cable pulls payload toward quadrotor)</li>
+            </ul>
+
+            <h4>Newton's Second Law for Payload:</h4>
+
+            <div class="equation-box">
+m_p * q̈_p = -m_p*g*e_3 + T*σ
+
+This is simpler than the quadrotor because the payload is a point mass (no rotation).
+            </div>
+
+            <h3>3.5 Cable Tension: The Key Constraint</h3>
+
+            <h4>What is Cable Tension?</h4>
+            <p>Cable tension $T$ is a scalar that represents how hard the cable is pulling. It always acts along the cable direction $\boldsymbol{\sigma}$.</p>
+
+            <h4>The Critical Constraint:</h4>
+
+            <div class="equation-box">
+T ≥ 0 (always!)
+
+Why? A cable can only PULL, never PUSH.
+
+If T becomes negative, the cable goes SLACK and the system enters a different mode of operation.
+            </div>
+
+            <h4>How Do We Know T?</h4>
+            <p>We can't measure $T$ directly. But we can compute it from the constraint that the cable length is constant.</p>
+
+            <p>Taking the second derivative of $\mathbf{q}_p = \mathbf{q}_m + \ell \boldsymbol{\sigma}$:</p>
+
+            <div class="equation-box">
+q̈_p = q̈_m + ℓ*σ̈ + ... (complicated!)
+
+From payload equation:
+q̈_p = -g*e_3 + (T/m_p)*σ
+
+From quadrotor equation:
+q̈_m = -g*e_3 + (1/m_m)*R_m*F_thrust - (T/m_m)*σ
+
+These can be combined to solve for T in terms of measured/desired quantities.
+            </div>
+
+            <h3>3.6 Complete System Dynamics Summary</h3>
+
+            <div class="equation-box">
+System is described by 8 coupled nonlinear ODEs:
+
+1) m_m*ẍ_m = -m_m*g*e_3 + R_m*F - T*σ      [Quad translation]
+2) I_quad*ω̇_m = -ω_m × (I_quad*ω_m) + τ   [Quad rotation]
+3) dR_m/dt = R_m*[ω_m]_×                    [Attitude kinematics]
+4) m_p*ẍ_p = -m_p*g*e_3 + T*σ              [Payload]
+5) q_p = q_m + ℓ*σ                         [Cable constraint]
+
+Total State = (q_m, ω_m, R_m, q_p, σ)
+Total DOF = 3+3+3+3+2 = 14, but reduced to 8 by constraints
+            </div>
+
+            <h3>3.7 Key Properties of These Dynamics</h3>
+
+            <h4>Property 1: Nonlinearity</h4>
+            <p>The system is <strong>highly nonlinear</strong>. Examples:</p>
+            <ul>
+                <li>Thrust depends on attitude (R_m), so we have R_m × F term</li>
+                <li>Rotation equation has the ω × I*ω term (gyroscopic coupling)</li>
+                <li>Cable constraint couples quadrotor and payload motions</li>
+            </ul>
+
+            <h4>Property 2: Coupling</h4>
+            <p>You can't solve for quadrotor motion independent of payload motion. They're tightly coupled through the cable tension T.</p>
+
+            <h4>Property 3: Underactuation</h4>
+            <p>8 DOF, 4 control inputs (motor thrusts). The 4 underactuated DOF emerge from the structure of the system.</p>
+
+            <div class="section-summary">
+                <h4>Part 3 Summary</h4>
+                <ul>
+                    <li>Quadrotor follows <strong>Newton + Euler equations</strong> with nonlinear coupling via rotation matrix</li>
+                    <li>Payload follows <strong>simple Newton's law</strong> (point mass)</li>
+                    <li>Cable constraint couples both through tension T and direction σ</li>
+                    <li>System is <strong>highly nonlinear, tightly coupled, and underactuated</strong></li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part4">
+            <h2>PART 4: DIFFERENTIAL FLATNESS - THE KEY INSIGHT</h2>
+
+            <h3>4.1 What IS Differential Flatness? (Intuitive Explanation)</h3>
+
+            <h4>Analogy: GPS Navigation</h4>
+            <p>Imagine you're a pilot. Your GPS unit shows the desired flight path as a series of waypoints. You need to convert this path into control commands (throttle, pitch, roll).</p>
+
+            <p><strong>With Differential Flatness:</strong> You can compute the control commands <strong>directly from the path</strong> using algebra - no need to solve the complex aircraft dynamics!</p>
+
+            <p><strong>Without Differential Flatness:</strong> You'd need to simulate the aircraft dynamics repeatedly to check if a path is feasible. This is slow and computationally expensive.</p>
+
+            <div class="concept-box">
+                <h4>Formal Definition: Differential Flatness</h4>
+                <p>A control system is <strong>differentially flat</strong> if there exist outputs y called <strong>flat outputs</strong> such that:</p>
+                <ol>
+                    <li>All states can be expressed as functions of y and its derivatives</li>
+                    <li>All inputs can be expressed as functions of y and its derivatives</li>
+                    <li>No integration is needed to compute states/inputs from y</li>
+                </ol>
+            </div>
+
+            <h3>4.2 Why Is Flatness Useful?</h3>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Non-Flat System</th>
+                        <th>Flat System</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Trajectory Planning</strong></td>
+                        <td>Design path → Check feasibility (optimization) → Redesign if needed ❌</td>
+                        <td>Design path → Compute inputs directly ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Computational Cost</strong></td>
+                        <td>High (solve ODE many times)</td>
+                        <td>Low (algebraic computation)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Real-Time Feasibility</strong></td>
+                        <td>Difficult</td>
+                        <td>Easy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Optimality</strong></td>
+                        <td>Can be optimal (but slow)</td>
+                        <td>Suboptimal but fast</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>4.3 Flat Outputs for Cable-Suspended Payload System</h3>
+
+            <h4>The Paper's Main Theoretical Result:</h4>
+
+            <div class="key-insight">
+                The system is DIFFERENTIALLY FLAT with flat outputs:
+                y_flat = (q_p, ψ_m)
+
+                Where:
+                - q_p: payload position (3 coordinates)
+                - ψ_m: quadrotor yaw angle (1 coordinate)
+
+                Total: 4 flat outputs for 4 control inputs ✓
+            </div>
+
+            <h4>Why Payload Position?</h4>
+            <p>This seems counterintuitive! The payload is not directly actuated, yet its position is a flat output. How can this be?</p>
+
+            <div class="step-by-step">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <p><strong>Specify a payload trajectory:</strong> Choose $\mathbf{q}_p(t)$ and compute its derivatives $\dot{\mathbf{q}}_p, \ddot{\mathbf{q}}_p, \dddot{\mathbf{q}}_p, ...$</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <p><strong>Compute required cable tension direction:</strong> From the payload equation $m_p \ddot{\mathbf{q}}_p = -m_p g \mathbf{e}_3 + T\boldsymbol{\sigma}$, we can solve for the required cable direction:</p>
+                    <div class="equation-box">
+σ_required = (m_p / T) * (ẍ_p + g*e_3)
+
+(The cable must pull in this direction to achieve the desired payload acceleration)
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <p><strong>Compute required quadrotor position:</strong> Using the cable constraint $\mathbf{q}_p = \mathbf{q}_m + \ell \boldsymbol{\sigma}$, we get:</p>
+                    <div class="equation-box">
+q_m = q_p - ℓ*σ_required
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <p><strong>Compute required quadrotor acceleration:</strong> Take time derivatives of the quadrotor position to get $\ddot{\mathbf{q}}_m$</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <p><strong>Compute required attitude and thrust:</strong> From the quadrotor equation $m_m \ddot{\mathbf{q}}_m = -m_m g \mathbf{e}_3 + \mathbf{R}_m \mathbf{F}_{thrust} + T\boldsymbol{\sigma}$, extract the required attitude $\mathbf{R}_m$ and thrust magnitude</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <p><strong>Compute motor commands:</strong> From the desired attitude and angular acceleration, compute the 4 individual motor thrusts</p>
+                </div>
+            </div>
+
+            <h4>The Magic: No Integration Needed!</h4>
+            <p>Each step uses <strong>only algebra and differentiation</strong> (which is easy). We never need to solve a differential equation! This is the essence of differential flatness.</p>
+
+            <h3>4.4 How to Use Flatness for Trajectory Generation</h3>
+
+            <h4>Algorithm: From Path to Control Commands</h4>
+
+            <div class="example-box">
+                <h4>Concrete Example: Moving from Point A to Point B</h4>
+
+                <p><strong>Input:</strong> Initial position $\mathbf{A} = [0, 0, 0]$, final position $\mathbf{B} = [10, 0, 5]$ meters, time $T = 10$ seconds</p>
+
+                <p><strong>Step 1: Design Smooth Trajectory</strong></p>
+                <p>Use a 5th-order polynomial with boundary conditions:</p>
+                <div class="equation-box">
+q_p(t) = a_0 + a_1*t + a_2*t² + a_3*t³ + a_4*t⁴ + a_5*t⁵
+
+Boundary Conditions:
+- q_p(0) = A (start position)
+- q̇_p(0) = 0 (start at rest)
+- q̈_p(0) = 0 (smooth start)
+- q_p(T) = B (end position)
+- q̇_p(T) = 0 (end at rest)
+- q̈_p(T) = 0 (smooth end)
+
+6 constraints → 6 unknowns (a_0 ... a_5) ✓ Uniquely solvable!
+                </div>
+
+                <p><strong>Step 2-6: Compute Control</strong></p>
+                <p>Use the steps from 4.3. The result is a complete control trajectory u(t) guaranteed to achieve the desired payload motion!</p>
+            </div>
+
+            <h3>4.5 Why This Works: The Underactuation is Not a Problem</h3>
+
+            <p>Normally, underactuation is bad: you can't independently control all DOF.</p>
+
+            <p>But the cable-suspended payload system has a <strong>special structure</strong>:</p>
+
+            <div class="diagram">
+Underactuated DOF do NOT have to be controlled independently!
+
+Instead, they NATURALLY EVOLVE from the cable constraint.
+
+Imagine:
+- You want payload at point P
+- The cable direction must be σ to achieve this
+- Therefore the quadrotor position MUST be at P - ℓ*σ
+- The quadrotor position then determines the attitude required
+- The attitude determines the motor thrusts needed
+
+The "uncontrolled" DOF (cable direction, attitude) are DETERMINED by
+your choice of desired payload trajectory!
+            </div>
+
+            <h3>4.6 Cable Tension Constraint</h3>
+
+            <h4>What If Tension Becomes Negative?</h4>
+            <p>The cable can only pull ($T \geq 0$). If our desired trajectory requires $T < 0$, the cable would need to push - impossible!</p>
+
+            <div class="warning-box">
+                <h4>⚠️ When Flatness Breaks Down: Slack Cable</h4>
+                <p>If a desired trajectory requires negative tension, the cable goes slack. The system enters a different mode: free-fall for the payload. This is a discrete mode switch - a hybrid system!</p>
+            </div>
+
+            <p>The paper proves that even with slack cable dynamics, the overall system remains differentially flat - but with more complex mode transitions.</p>
+
+            <div class="section-summary">
+                <h4>Part 4 Summary</h4>
+                <ul>
+                    <li><strong>Differential flatness</strong> lets you compute control from path using only algebra</li>
+                    <li><strong>Flat outputs:</strong> payload position (3 DOF) + yaw (1 DOF)</li>
+                    <li><strong>Why it works:</strong> The underactuated DOF are uniquely determined by the cable constraint</li>
+                    <li><strong>Limitation:</strong> Cable tension must stay non-negative (cable can't push)</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part5">
+            <h2>PART 5: GEOMETRIC CONTROL - TRACKING TRAJECTORIES</h2>
+
+            <h3>5.1 From Flatness to Control: The Gap</h3>
+
+            <p>Differential flatness tells us how to <strong>plan</strong> trajectories. But in reality, the system won't follow the plan perfectly. There are:</p>
+            <ul>
+                <li>Model uncertainties (unknown mass, aerodynamics)</li>
+                <li>Measurement noise (GPS, IMU errors)</li>
+                <li>Disturbances (wind, vibrations)</li>
+                <li>Unmodeled dynamics (flexibility, lag)</li>
+            </ul>
+
+            <p>So we need a <strong>feedback control law</strong> that tracks the desired trajectory despite these disturbances.</p>
+
+            <h3>5.2 Cascaded Control Structure</h3>
+
+            <h4>Hierarchical Control Loops:</h4>
+
+            <div class="diagram">
+Desired Payload Trajectory
+            |
+            v
+    FLATNESS TRAJECTORY GENERATOR
+    (Compute desired q_m, R_m, F, τ)
+            |
+            v
+OUTER LOOP: Position Tracking
+(Quadrotor position control)
+            |
+            v
+INNER LOOP: Attitude Tracking
+(Quadrotor rotation control)
+            |
+            v
+Motor Commands (4 thrust values)
+            </div>
+
+            <h4>Why Cascaded?</h4>
+            <ol>
+                <li><strong>Outer loop</strong> is slower (position control)</li>
+                <li><strong>Inner loop</strong> is faster (attitude control)</li>
+                <li>Inner loop stabilizes first, then outer loop can rely on it</li>
+                <li>This is much more stable than trying to control everything at once</li>
+            </ol>
+
+            <h3>5.3 Outer Loop: Position Control</h3>
+
+            <h4>Goal:</strong> Make quadrotor position $\mathbf{q}_m$ track desired position $\mathbf{q}_{m,d}$</h4>
+
+            <h4>Error Signal:</h4>
+            <div class="equation-box">
+e_q = q_m - q_m,d  (position error)
+e_qdot = q̇_m - q̇_m,d  (velocity error)
+            </div>
+
+            <h4>Desired Acceleration (PD Control):</h4>
+            <div class="equation-box">
+q̈_m,d = q̈_m,ff - K_p * e_q - K_d * e_qdot
+
+Where:
+- q̈_m,ff: feedforward acceleration (from trajectory generation)
+- K_p: position gain (proportional)
+- K_d: velocity gain (derivative)
+- This generates a desired acceleration for the quadrotor
+            </div>
+
+            <h4>Extract Desired Attitude from Desired Acceleration:</h4>
+            <p>From the quadrotor dynamics:</p>
+            <div class="equation-box">
+m_m * ẍ_m = -m_m*g*e_3 + R_m*F - T*σ
+
+The total acceleration has:
+- Gravity component: g*e_3 (down)
+- Thrust component: (1/m_m)*R_m*F
+- Cable tension component: -(T/m_m)*σ
+
+Rearranging, the desired attitude must be aligned with:
+a_des + g*e_3 = (1/m_m)*R_m*F_des
+
+This defines R_m,d (the desired rotation matrix)
+            </div>
+
+            <h3>5.4 Inner Loop: Attitude Control on SO(3)</h3>
+
+            <h4>The Challenge: SO(3) is Not a Vector Space</h4>
+            <p>You can't use standard PD control on rotations! Why?</p>
+
+            <ul>
+                <li>Rotation matrices don't form a vector space (can't "subtract" two rotations)</li>
+                <li>Euler angles have singularities (gimbal lock)</li>
+                <li>Need to work directly on the SO(3) manifold</li>
+            </ul>
+
+            <div class="concept-box">
+                <h4>Geometric Control: Control on Manifolds</h4>
+                <p><strong>Idea:</strong> Instead of using angles, use the rotation matrix directly. Define errors and control laws that respect the geometry of SO(3).</p>
+            </div>
+
+            <h4>Rotation Error (on SO(3)):</h4>
+            <div class="equation-box">
+e_R = (1/2) * (R_d^T*R - R^T*R_d)_∨
+
+Where:
+- R: actual rotation matrix
+- R_d: desired rotation matrix
+- (·)^T: transpose
+- (·)_∨: converts skew-symmetric matrix back to vector (inverse of skew operator)
+
+This error is in ℝ³ and represents "angular distance" on SO(3).
+            </div>
+
+            <h4>Angular Velocity Error:</h4>
+            <div class="equation-box">
+e_ω = ω - R^T*R_d*ω_d
+
+(Angular velocity in body frame)
+            </div>
+
+            <h4>Geometric Control Law for Attitude:</h4>
+            <div class="equation-box">
+τ_control = -K_R * e_R - K_ω * e_ω
+
+Where:
+- K_R: attitude gain (proportional)
+- K_ω: angular rate gain (derivative)
+- This torque is applied to the quadrotor
+
+With appropriate choice of K_R, K_ω, the system exponentially converges to desired attitude!
+            </div>
+
+            <h3>5.5 Motor Control: From Torques to Thrust</h3>
+
+            <h4>The Problem:</h4>
+            <p>We've computed the desired torque $\boldsymbol{\tau}_{control}$. But the actual control input is 4 motor thrusts, one for each rotor!</p>
+
+            <h4>The Quadrotor Actuation Model:</h4>
+            <div class="equation-box">
+Motor speeds: Ω_1, Ω_2, Ω_3, Ω_4 (rotor speeds in rad/s)
+
+Thrust from each rotor: T_i = k_T * Ω_i²
+(proportional to square of rotor speed, with constant k_T)
+
+Torques from rotor speeds: τ = [
+    (T_1 - T_2 + T_3 - T_4) * d  (pitch torque)
+    (-T_1 - T_2 - T_3 + T_4) * d  (roll torque)
+    k_M * (T_1 - T_2 + T_3 - T_4)  (yaw torque)
+]
+
+Where d is rotor arm length.
+            </div>
+
+            <h4>Inverse Mapping: Thrusts to Motor Commands</h4>
+            <p>We need to invert this relationship to compute Ω_1, Ω_2, Ω_3, Ω_4 given desired total thrust and torque.</p>
+
+            <h3>5.6 Control Architecture Summary</h3>
+
+            <div class="diagram">
+Desired Payload Path
+       |
+       v
+   FLATNESS
+       |
+    Compute q_m,d, R_m,d, F_d, τ_d
+       |
+    ┌──┴──────────────────┐
+    |                     |
+    v                     v
+OUTER LOOP          INNER LOOP
+Position Control    Attitude Control
+    |               (on SO(3))
+    v               |
+q̈_m,d ←────────→ R_m,d
+    |               |
+    |               v
+    └─────→ τ_control
+            |
+            v
+    Motor Speed Commands
+    Ω_1, Ω_2, Ω_3, Ω_4
+            </div>
+
+            <div class="section-summary">
+                <h4>Part 5 Summary</h4>
+                <ul>
+                    <li><strong>Cascaded structure:</strong> Outer position loop + inner attitude loop</li>
+                    <li><strong>Outer loop:</strong> PD control on position</li>
+                    <li><strong>Inner loop:</strong> Geometric control on SO(3) (not Euler angles!)</li>
+                    <li><strong>Advantage:</strong> Avoids singularities and gimbal lock</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part6">
+            <h2>PART 6: STABILITY ANALYSIS - DOES IT ACTUALLY WORK?</h2>
+
+            <h3>6.1 The Question: Will Errors Go to Zero?</h3>
+
+            <p>We've designed a control law. But does it actually make the system track the desired trajectory? What if the system oscillates forever or diverges?</p>
+
+            <p>We need a <strong>rigorous proof</strong> that the system converges to the desired trajectory. This is where <strong>Lyapunov stability theory</strong> comes in.</p>
+
+            <h3>6.2 Lyapunov Stability: The Energy Method</h3>
+
+            <h4>Core Idea: Energy Always Decreases</h4>
+            <p>Think of a ball rolling in a valley. The ball's total energy (kinetic + potential) always decreases due to friction, until it settles at the bottom with zero velocity.</p>
+
+            <div class="diagram">
+Energy
+  ^
+  | /\___
+  |/  --- <- Settles here
+  |_______
+
+  Time ---->
+
+System converges when "energy" (Lyapunov function) always decreases.
+            </div>
+
+            <h4>Mathematical Framework:</h4>
+            <div class="equation-box">
+Define V(error) = "energy-like function" of tracking errors
+
+Requirements for stability:
+1) V(0) = 0              (zero error = zero energy)
+2) V(e) > 0 for e ≠ 0   (any error = positive energy)
+3) dV/dt ≤ 0            (energy always decreases or stays same)
+
+If these hold, errors converge to zero!
+            </div>
+
+            <h3>6.3 Lyapunov Function for Payload Tracking</h3>
+
+            <h4>Simple Lyapunov Function:</h4>
+            <div class="equation-box">
+V = (1/2)*m_p*|ė_p|² + (1/2)*K_p*|e_p|²
+
+Where:
+- e_p = q_p - q_p,d (payload position error)
+- ė_p = velocity error
+- K_p > 0 (gain parameter)
+
+This represents:
+- Kinetic energy of error (first term)
+- Potential energy of error (second term)
+            </div>
+
+            <h4>Checking the Requirements:</h4>
+
+            <p><strong>Requirement 1:</strong> $V(0) = 0$ ✓ (Zero error gives zero energy)</p>
+
+            <p><strong>Requirement 2:</strong> $V(e) > 0$ ✓ (Positive unless error is zero)</p>
+
+            <p><strong>Requirement 3:</strong> $\dot{V} \leq 0$ (Does energy decrease?)</p>
+
+            <div class="step-by-step">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <p>Take time derivative of V:</p>
+                    <div class="equation-box">
+dV/dt = m_p*ė_p · ë_p + K_p*e_p · ė_p
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <p>From payload dynamics: $m_p ë_p = -m_p g e_3 + T\boldsymbol{\sigma} - m_p ë_{p,d}$ (error acceleration)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <p>With proper control law (cable tension tracking), the terms align such that:</p>
+                    <div class="equation-box">
+dV/dt = -K_v*|ė_p|²
+
+Where K_v > 0 (damping gain from inner loop)
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <p>Since $\dot{V} = -K_v |\dot{e}_p|^2 \leq 0$, the Lyapunov conditions are satisfied!</p>
+                </div>
+            </div>
+
+            <h3>6.4 Exponential Stability Result</h3>
+
+            <div class="success-box">
+                <h4>✓ Main Stability Result</h4>
+                <p>Under the proposed geometric control law with proper gains $K_p, K_v, K_R, K_\omega$, the tracking error exponentially converges to zero.</p>
+                <p><strong>Mathematical statement:</strong></p>
+                <div class="equation-box">
+|e_q(t)| ≤ M * e^(-λt) * |e_q(0)|
+
+Where:
+- M: positive constant depending on system parameters
+- λ: convergence rate (depends on gains)
+- e_q(0): initial error
+
+This proves tracking!
+                </div>
+            </div>
+
+            <h3>6.5 Domain of Attraction: Where Does Stability Hold?</h3>
+
+            <h4>Important Caveat: NOT Global Stability</h4>
+            <p>The stability result is <strong>almost-global</strong>, not global. There are some initial conditions where convergence might fail.</p>
+
+            <h4>Why Not Global?</h4>
+            <div class="intuition">
+                <strong>Intuition:</strong> SO(3) is a compact manifold (curved surface), not a vector space. It's impossible to design a smooth control law that stabilizes all points on a compact manifold to a single point. This is a topological theorem!
+            </intuition>
+
+            <p>Think of it like coloring the Earth with magnetic poles: you can't smoothly assign a direction (north) at every point because at the poles, the concept breaks down.</p>
+
+            <h4>Singular Configurations:</h4>
+            <p>The control law fails when:</p>
+            <ul>
+                <li>Cable points straight down (unstable equilibrium)</li>
+                <li>Quadrotor is upside-down (but this should never happen in practical trajectories)</li>
+            </ul>
+
+            <p>In practice, starting from any reasonable initial condition (quadrotor upright, cable roughly pointed downward) guarantees convergence.</p>
+
+            <div class="section-summary">
+                <h4>Part 6 Summary</h4>
+                <ul>
+                    <li><strong>Lyapunov stability analysis</strong> proves tracking error converges to zero</li>
+                    <li><strong>Exponential convergence:</strong> Errors decay as $e^{-\lambda t}$</li>
+                    <li><strong>Almost-global stability:</strong> Works from almost any initial condition</li>
+                    <li><strong>Not global:</strong> Fails only at singular configurations (e.g., cable down)</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part7">
+            <h2>PART 7: TRAJECTORY GENERATION - PLANNING WITHOUT SIMULATION</h2>
+
+            <h3>7.1 The Efficiency Argument</h3>
+
+            <h4>Traditional Trajectory Planning:</h4>
+            <div class="diagram">
+Design Path 1
+    ↓
+Simulate Dynamics
+    ↓
+Feasible? ← NO → Redesign Path 2
+    ↓ YES       ↑
+Use Path       (Iterate many times)
+            </div>
+
+            <h4>With Differential Flatness:</h4>
+            <div class="diagram">
+Design Path (payload trajectory)
+    ↓
+DIRECT COMPUTATION (algebra only)
+    ↓
+Get Control Inputs
+(Guaranteed feasible by construction!)
+            </div>
+
+            <h3>7.2 Polynomial Trajectory Parameterization</h3>
+
+            <h4>Why Polynomials?</h4>
+            <ul>
+                <li>Easy to work with (differentiate, integrate)</li>
+                <li>Smooth (infinitely many derivatives)</li>
+                <li>Can satisfy boundary conditions</li>
+                <li>Can control smoothness by choosing degree</li>
+            </ul>
+
+            <h4>Generic Polynomial Trajectory:</h4>
+            <div class="equation-box">
+q_p(t) = a_0 + a_1*t + a_2*t² + a_3*t³ + a_4*t⁴ + a_5*t⁵
+
+Derivatives:
+q̇_p(t) = a_1 + 2*a_2*t + 3*a_3*t² + 4*a_4*t³ + 5*a_5*t⁴
+q̈_p(t) = 2*a_2 + 6*a_3*t + 12*a_4*t² + 20*a_5*t³
+            </div>
+
+            <p>A 5th-order polynomial has 6 unknown coefficients: $[a_0, a_1, a_2, a_3, a_4, a_5]$</p>
+
+            <h3>7.3 Boundary Conditions: Setting Up the Equations</h3>
+
+            <h4>Problem: Move from Point A to Point B in Time T</h4>
+
+            <p><strong>Inputs:</strong></p>
+            <ul>
+                <li>$\mathbf{A}$: initial payload position</li>
+                <li>$\mathbf{B}$: final payload position</li>
+                <li>$T$: total time</li>
+            </ul>
+
+            <h4>Boundary Conditions (6 constraints for 6 unknowns):</h4>
+            <div class="equation-box">
+At t = 0 (initial):
+- q_p(0) = A              [position constraint]
+- q̇_p(0) = 0             [start at rest]
+- q̈_p(0) = 0             [start smoothly]
+
+At t = T (final):
+- q_p(T) = B              [reach goal]
+- q̇_p(T) = 0             [stop at goal]
+- q̈_p(T) = 0             [stop smoothly]
+
+Total: 6 constraints
+            </div>
+
+            <h3>7.4 Solving for Coefficients</h3>
+
+            <h4>For Each Coordinate (x, y, or z), Solve:</h4>
+            <div class="step-by-step">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <p>Write the 6 constraints as a linear system:</p>
+                    <div class="equation-box">
+At t=0:
+q_p(0) = a_0 = A_x
+q̇_p(0) = a_1 = 0
+q̈_p(0) = 2*a_2 = 0  →  a_2 = 0
+
+At t=T:
+q_p(T) = a_0 + a_1*T + a_2*T² + a_3*T³ + a_4*T⁴ + a_5*T⁵ = B_x
+q̇_p(T) = a_1 + 2*a_2*T + 3*a_3*T² + 4*a_4*T³ + 5*a_5*T⁴ = 0
+q̈_p(T) = 2*a_2 + 6*a_3*T + 12*a_4*T² + 20*a_5*T³ = 0
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <p>From t=0 conditions: $a_0 = A_x$, $a_1 = 0$, $a_2 = 0$</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <p>Substitute into t=T conditions to get 3 equations in 3 unknowns ($a_3, a_4, a_5$):</p>
+                    <div class="equation-box">
+a_3*T³ + a_4*T⁴ + a_5*T⁵ = B_x - A_x
+3*a_3*T² + 4*a_4*T³ + 5*a_5*T⁴ = 0
+6*a_3*T + 12*a_4*T² + 20*a_5*T³ = 0
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <p>Solve this 3×3 linear system (using Gaussian elimination or matrix inversion)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <p><strong>Done!</strong> You now have the complete trajectory $q_p(t)$ for the x-coordinate. Repeat for y and z.</p>
+                </div>
+            </div>
+
+            <h3>7.5 Computing Control Inputs from Trajectory</h3>
+
+            <h4>Once You Have the Payload Trajectory:</h4>
+
+            <p>Compute derivatives:</p>
+            <div class="equation-box">
+From q_p(t), compute:
+- q̇_p(t)
+- q̈_p(t)
+- q̇̇̇_p(t) (third derivative, "jerk")
+            </div>
+
+            <h4>Compute Required Cable Direction:</h4>
+            <div class="equation-box">
+From payload dynamics: m_p*q̈_p = -m_p*g*e_3 + T*σ
+
+Solving for required direction (T assumed positive):
+σ_required = (m_p*q̈_p + m_p*g*e_3) / |...|
+
+Normalize to unit vector.
+            </div>
+
+            <h4>Compute Required Quadrotor Position:</h4>
+            <div class="equation-box">
+Cable constraint: q_p = q_m + ℓ*σ
+
+Therefore: q_m = q_p - ℓ*σ_required
+            </div>
+
+            <h4>Compute Required Quadrotor Acceleration:</h4>
+            <p>Take derivatives of the quadrotor position to get $\ddot{\mathbf{q}}_m$</p>
+
+            <h4>Compute Required Attitude and Thrust:</h4>
+            <p>From quadrotor dynamics, extract the required rotation matrix $\mathbf{R}_{m,req}$ and thrust magnitude $F_{req}$.</p>
+
+            <h4>Compute Motor Commands:</h4>
+            <p>From attitude and torque, solve for 4 motor thrusts</p>
+
+            <div class="success-box">
+                <h4>✓ Result</h4>
+                <p>You now have a complete, dynamically feasible control trajectory that makes the quadrotor deliver the payload from A to B!</p>
+                <p><strong>Computational cost:</strong> Polynomial fitting (seconds) + differentiation (microseconds) per time step. No ODE solving!</p>
+            </div>
+
+            <div class="section-summary">
+                <h4>Part 7 Summary</h4>
+                <ul>
+                    <li><strong>Trajectory planning:</strong> Use 5th-order polynomials with boundary conditions</li>
+                    <li><strong>Computation:</strong> Pure algebra (no integration)</li>
+                    <li><strong>Feasibility:</strong> Guaranteed by construction</li>
+                    <li><strong>Speed:</strong> Real-time computable</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part8">
+            <h2>PART 8: HYBRID DYNAMICS - WHEN THE CABLE GOES SLACK</h2>
+
+            <h3>8.1 The Cable Can Go Slack</h3>
+
+            <h4>The Constraint: $T \geq 0$</h4>
+            <p>A cable can only <strong>pull</strong>, never <strong>push</strong>. So cable tension must satisfy: $T \geq 0$</p>
+
+            <p>What happens if a maneuver requires $T < 0$?</p>
+
+            <div class="warning-box">
+                <h4>⚠️ Slack Cable Mode</h4>
+                <p>If $T$ would need to be negative, the cable goes SLACK and can't exert force. The system switches to a different mode: the payload undergoes free-fall!</p>
+            </div>
+
+            <h3>8.2 Two Modes of Operation</h3>
+
+            <h4>Mode 1: Taut Cable ($T > 0$)</h4>
+            <p>Normal operation. Cable is under tension and pulling the payload toward the quadrotor.</p>
+
+            <div class="equation-box">
+Mode 1 Dynamics:
+m_m*ẍ_m = -m_m*g*e_3 + R_m*F - T*σ     [Quad with cable tension]
+I*ω̇_m = -ω_m × (I*ω_m) + τ              [Quad rotation]
+dR_m/dt = R_m*[ω_m]_×                   [Attitude kinematics]
+m_p*ẍ_p = -m_p*g*e_3 + T*σ              [Payload with tension]
+
+Constraint: T ≥ 0
+            </div>
+
+            <h4>Mode 2: Slack Cable ($T = 0$)</h4>
+            <p>Cable is slack (no tension). The payload is in free-fall!</p>
+
+            <div class="equation-box">
+Mode 2 Dynamics:
+m_m*ẍ_m = -m_m*g*e_3 + R_m*F            [Quad WITHOUT cable tension]
+I*ω̇_m = -ω_m × (I*ω_m) + τ              [Quad rotation - same]
+dR_m/dt = R_m*[ω_m]_×                   [Attitude kinematics - same]
+m_p*ẍ_p = -m_p*g*e_3                    [Payload in FREE-FALL]
+
+Constraint: Cable is slack, may become taut later
+            </div>
+
+            <h3>8.3 Mode Transitions: When Does Cable Become Taut?</h3>
+
+            <h4>Transition from Slack to Taut:</h4>
+            <div class="diagram">
+Slack Mode (free-fall):
+- Payload accelerating downward under gravity
+- Quadrotor maneuvering
+- Cable might be getting stretched
+
+Moment when cable becomes taut:
+- Constraint |q_p - q_m| = ℓ is violated
+- Cable snaps tight
+- Sudden jerk in payload motion (impact)
+- T jumps from 0 to positive value
+
+This is a DISCRETE MODE SWITCH (hybrid system)
+            </div>
+
+            <h3>8.4 Why This is a Problem for Simple Approaches</h3>
+
+            <h4>Classical Control Won't Handle This</h4>
+            <p>Hybrid systems are difficult to control:</p>
+            <ul>
+                <li>Continuous dynamics change at discrete times</li>
+                <li>Lyapunov functions must handle both modes</li>
+                <li>Trajectories may have kinks at transition times</li>
+                <li>Impact when cable becomes taut is nonsmooth</li>
+            </ul>
+
+            <h3>8.5 The Paper's Contribution: Hybrid Flatness</h3>
+
+            <div class="success-box">
+                <h4>✓ Hybrid System Remains Flat</h4>
+                <p>The paper proves that the quadrotor-payload system is <strong>differentially flat even with slack cable dynamics</strong>!</p>
+                <p>This means trajectory generation works even when the cable might go slack, as long as:</p>
+                <ul>
+                    <li>We account for the slack phase in planning</li>
+                    <li>We ensure the cable becomes taut at the right moment</li>
+                    <li>We respect the T ≥ 0 constraint</li>
+                </ul>
+            </div>
+
+            <h3>8.6 Practical Implications</h3>
+
+            <h4>For Trajectory Planning:</h4>
+            <div class="diagram">
+Strategy:
+1) Design payload trajectory
+2) Check if required tension T ≥ 0 throughout
+   - If YES: use taut cable control
+   - If NO: the trajectory is infeasible! Redesign it.
+
+Result: You avoid slack cable by design, not by control.
+            </div>
+
+            <h4>Safe Trajectories Avoid Slack Cable</h4>
+            <p>Aggressive maneuvers might require zero or negative tension. The solution:</p>
+            <ul>
+                <li><strong>Slow down the trajectory</strong> (increase time T)</li>
+                <li><strong>Reduce accelerations</strong> (use smoother curves)</li>
+                <li><strong>Limit maneuver geometry</strong> (avoid sharp turns at low altitude)</li>
+            </ul>
+
+            <div class="section-summary">
+                <h4>Part 8 Summary</h4>
+                <ul>
+                    <li><strong>Cable tension constraint:</strong> $T \geq 0$ always</li>
+                    <li><strong>Two modes:</strong> Taut cable (T > 0) and slack cable (T = 0, free-fall)</li>
+                    <li><strong>Hybrid system:</strong> Discrete mode switches when cable becomes taut</li>
+                    <li><strong>Paper's result:</strong> System remains flat even with slack dynamics</li>
+                    <li><strong>Practical approach:</strong> Design trajectories that avoid slack cable</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part9">
+            <h2>PART 9: KEY THEORETICAL CONTRIBUTIONS</h2>
+
+            <h3>9.1 Four Main Theoretical Results</h3>
+
+            <h4>Contribution 1: Precise System Characterization</h4>
+            <div class="success-box">
+                <h4>✓ Result</h4>
+                <p>Characterized the quadrotor-payload system as:</p>
+                <div class="equation-box">
+- Configuration space: SE(3) × S²
+- DOF: 8
+- Control inputs: 4
+- Underactuation degree: 4
+
+This precise mathematical characterization became the standard model.
+                </div>
+            </div>
+
+            <h4>Contribution 2: Differential Flatness</h4>
+            <div class="success-box">
+                <h4>✓ Result</h4>
+                <p>Proved that the system is differentially flat with flat outputs:</p>
+                <div class="equation-box">
+y_flat = (q_p, ψ_m)
+
+Meaning:
+- All states can be expressed as functions of y and derivatives
+- All inputs can be expressed as functions of y and derivatives
+- No integration needed
+
+This enables direct trajectory generation!
+                </div>
+            </div>
+
+            <h4>Contribution 3: Geometric Control Law</h4>
+            <div class="success-box">
+                <h4>✓ Result</h4>
+                <p>Designed a control law on SE(3) manifold that:</p>
+                <ul>
+                    <li>Avoids singularities (no gimbal lock)</li>
+                    <li>Exponentially stabilizes tracking error</li>
+                    <li>Has almost-global convergence</li>
+                    <li>Is implementable in real systems</li>
+                </ul>
+            </div>
+
+            <h4>Contribution 4: Hybrid System Analysis</h4>
+            <div class="success-box">
+                <h4>✓ Result</h4>
+                <p>Extended flatness analysis to handle:</p>
+                <ul>
+                    <li>Slack cable phases</li>
+                    <li>Mode transitions (taut ↔ slack)</li>
+                    <li>Non-smooth impacts</li>
+                </ul>
+            </div>
+
+            <h3>9.2 Why These Contributions Are Important</h3>
+
+            <div class="diagram">
+BEFORE THIS PAPER:
+- No systematic theory for cable-suspended payload control
+- Trajectory planning required complex optimization
+- Stability not proven
+- Hybrid dynamics ignored
+
+AFTER THIS PAPER:
+✓ Clear theoretical framework (differential flatness)
+✓ Efficient trajectory generation (no optimization!)
+✓ Proven stability guarantees
+✓ Handling of hybrid dynamics
+✓ Foundation for all subsequent work
+            </div>
+
+            <h3>9.3 Impact on the Field</h3>
+
+            <p>This paper became the <strong>foundational reference</strong> for cable-suspended payload control research. Its contributions enabled:</p>
+
+            <ul>
+                <li><strong>Practical implementations:</strong> Real drones with suspended payloads</li>
+                <li><strong>Extensions:</strong> Multiple drones, flexible cables, uncertain mass, etc.</li>
+                <li><strong>Learning-based methods:</strong> RL algorithms trained on this system model</li>
+                <li><strong>Advanced control:</strong> MPC, adaptive control, constrained control</li>
+            </ul>
+
+            <h3>9.4 The Paradigm Shift</h3>
+
+            <div class="key-insight">
+                From: "How do I control this system?" (trial and error)
+                To: "The system has this mathematical structure!" (systematic design)
+            </div>
+
+            <div class="section-summary">
+                <h4>Part 9 Summary</h4>
+                <ul>
+                    <li><strong>4 main contributions:</strong> System characterization, flatness, geometric control, hybrid analysis</li>
+                    <li><strong>Before:</strong> No systematic approach to this problem</li>
+                    <li><strong>After:</strong> Clear theoretical framework that enabled the field</li>
+                    <li><strong>Impact:</strong> This paper is foundational for all subsequent work</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part10">
+            <h2>PART 10: PRACTICAL IMPLICATIONS & APPLICATIONS</h2>
+
+            <h3>10.1 Concrete Algorithm: From Desired Path to Motor Commands</h3>
+
+            <h4>Complete Algorithm in 6 Steps</h4>
+
+            <div class="step-by-step">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <p><strong>Input: Desired Payload Motion</strong></p>
+                    <p>Specify trajectory: $\mathbf{q}_{p,des}(t)$ from time 0 to $T$.</p>
+                    <p><strong>Compute derivatives:</strong> $\dot{\mathbf{q}}_{p,des}, \ddot{\mathbf{q}}_{p,des}, \dddot{\mathbf{q}}_{p,des}$</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <p><strong>Compute Required Cable Direction</strong></p>
+                    <p>From payload dynamics $m_p \ddot{\mathbf{q}}_p = -m_p g \mathbf{e}_3 + T\boldsymbol{\sigma}$:</p>
+                    <div class="equation-box">
+σ_des = (m_p*q̈_p,des + m_p*g*e_3) / |m_p*q̈_p,des + m_p*g*e_3|
+(Normalize to unit vector)
+
+Also compute required tension magnitude:
+T_des = m_p*|q̈_p,des + g*e_3|
+
+CHECK: T_des ≥ 0? If not, trajectory is infeasible (cable would be slack).
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <p><strong>Compute Required Quadrotor Position</strong></p>
+                    <p>Cable constraint: $\mathbf{q}_p = \mathbf{q}_m + \ell \boldsymbol{\sigma}$</p>
+                    <div class="equation-box">
+q_m,des = q_p,des - ℓ*σ_des
+
+Compute derivatives:
+q̇_m,des = q̇_p,des - ℓ*σ̇_des
+q̈_m,des = q̈_p,des - ℓ*σ̈_des
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <p><strong>Compute Required Attitude (Direction Quadrotor Must Face)</strong></p>
+                    <p>From quadrotor dynamics: $m_m \ddot{\mathbf{q}}_m = -m_m g \mathbf{e}_3 + \mathbf{R}_m \mathbf{F}_{thrust} + T\boldsymbol{\sigma}$</p>
+                    <p>Rearranging, the direction of net acceleration (after accounting for gravity) determines attitude:</p>
+                    <div class="equation-box">
+Total desired acceleration = q̈_m,des
+
+The vertical component (relative to gravity) comes from:
+(1/m_m)*R_m*F_thrust
+
+Extract R_m,des (rotation matrix) from this. This is the attitude the quadrotor must have.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <p><strong>Compute Required Angular Acceleration</strong></p>
+                    <p>To achieve the desired attitude, compute required angular acceleration from attitude kinematics.</p>
+                    <p>This gives the required torque $\boldsymbol{\tau}_{des}$ via Euler's equation.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <p><strong>Compute Motor Thrust Commands</strong></p>
+                    <p>From required attitude, thrust magnitude, and torque, solve inverse kinematics:</p>
+                    <div class="equation-box">
+Compute 4 motor thrusts: T_1, T_2, T_3, T_4
+(Depends on quadrotor geometry - arm length, motor placement, etc.)
+
+Output to motor controllers.
+                    </div>
+                </div>
+            </div>
+
+            <h3>10.2 Example: Delivering a Package</h3>
+
+            <div class="example-box">
+                <h4>Scenario: Amazon Delivery Drone</h4>
+
+                <p><strong>Setup:</strong></p>
+                <ul>
+                    <li>Package location: A = [0, 0, 0] (ground)</li>
+                    <li>Delivery location: B = [100, 50, 10] (rooftop, 10m high)</li>
+                    <li>Time budget: T = 30 seconds</li>
+                    <li>Cable length: ℓ = 5 meters</li>
+                    <li>Package mass: m_p = 2 kg</li>
+                    <li>Drone mass: m_m = 10 kg</li>
+                </ul>
+
+                <p><strong>Step 1: Design Payload Trajectory</strong></p>
+                <p>Use 5th-order polynomial with boundary conditions (start at rest, end at rest)</p>
+
+                <p><strong>Step 2-5: Compute Control Trajectory</strong></p>
+                <p>Apply the algorithm above for each time step (e.g., every 10 ms)</p>
+
+                <p><strong>Step 6: Execute</strong></p>
+                <p>Send motor commands to the 4 rotors. The package smoothly rises to the rooftop!</p>
+
+                <p><strong>Key Advantage:</strong> No need to simulate the dynamics during planning. Just compute algebraically!</p>
+            </div>
+
+            <h3>10.3 Advantages vs. Classical Methods</h3>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Classical (Optimization-Based)</th>
+                        <th>Flatness-Based</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Planning Algorithm</strong></td>
+                        <td>Optimize trajectory subject to dynamics constraints</td>
+                        <td>Directly compute from flat outputs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Computation Time</strong></td>
+                        <td>Minutes to hours (offline)</td>
+                        <td>Milliseconds (real-time possible)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Feasibility Guarantee</strong></td>
+                        <td>Only if optimization converges properly</td>
+                        <td>Guaranteed by construction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Online Replanning</strong></td>
+                        <td>Difficult (too slow)</td>
+                        <td>Feasible (real-time)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Implementation Complexity</strong></td>
+                        <td>Complex (optimization solvers needed)</td>
+                        <td>Simple (polynomial + differentiation)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Optimality</strong></td>
+                        <td>Can be optimal for selected criteria</td>
+                        <td>Not generally optimal, but simple</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>10.4 Real-World Applications</h3>
+
+            <h4>1. Emergency Delivery</h4>
+            <p><strong>Use case:</strong> Deliver medical supplies to disaster zones or remote locations</p>
+            <p><strong>Advantage:</strong> Lightweight drone (fuel-efficient), large payload, stable trajectory</p>
+
+            <h4>2. Construction</h4>
+            <p><strong>Use case:</strong> Lift building materials to heights</p>
+            <p><strong>Advantage:</strong> Precise trajectory control minimizes swinging (safety)</p>
+
+            <h4>3. Environmental Monitoring</h4>
+            <p><strong>Use case:</strong> Suspend sensors/cameras for surveying</p>
+            <p><strong>Advantage:</strong> Smooth motion (data quality), stable placement</p>
+
+            <h4>4. Military/Security</h4>
+            <p><strong>Use case:</strong> Covert deployment of equipment</p>
+            <p><strong>Advantage:</strong> Minimal oscillation (harder to detect)</p>
+
+            <div class="section-summary">
+                <h4>Part 10 Summary</h4>
+                <ul>
+                    <li><strong>6-step algorithm</strong> converts desired payload trajectory to motor commands</li>
+                    <li><strong>Computation:</strong> Polynomial fitting + differentiation (real-time feasible)</li>
+                    <li><strong>Advantages:</strong> Speed, feasibility guarantee, online replanning capability</li>
+                    <li><strong>Applications:</strong> Delivery, construction, monitoring, military use</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part11">
+            <h2>PART 11: EXTENSIONS & FUTURE DIRECTIONS</h2>
+
+            <h3>11.1 Natural Extensions of This Work</h3>
+
+            <h4>Extension 1: Flexible Cables</h4>
+            <div class="concept-box">
+                <h4>Motivation</h4>
+                <p>Real cables have elasticity (stretch). Assuming inextensible cables is unrealistic for large payloads or long cables.</p>
+            </div>
+
+            <p><strong>Related work:</strong> Zeng et al. (2017)</p>
+
+            <p><strong>Challenges:</strong> Cable elasticity adds more DOF (cable length becomes a state variable, not constant)</p>
+
+            <p><strong>Impact on flatness:</strong> System remains flat but with different flat outputs</p>
+
+            <h4>Extension 2: Multiple Drones Carrying One Payload</h4>
+            <div class="concept-box">
+                <h4>Motivation</h4>
+                <p>For very heavy payloads, use 2, 3, or 4 drones to carry one object cooperatively.</p>
+            </div>
+
+            <p><strong>Challenges:</strong></p>
+            <ul>
+                <li>How to allocate total thrust among drones?</li>
+                <li>How to keep cables from tangling?</li>
+                <li>How to synchronize drone motions?</li>
+            </ul>
+
+            <p><strong>Related work:</strong> Sreenath, Kumar (2019)</p>
+
+            <h4>Extension 3: Uncertain Payload Mass</h4>
+            <div class="concept-box">
+                <h4>Motivation</h4>
+                <p>In practice, you might not know the exact payload mass. Unknown mass causes control errors.</p>
+            </div>
+
+            <p><strong>Solutions:</strong></p>
+            <ul>
+                <li><strong>Adaptive control:</strong> Estimate mass online and update gains (Papers 11-13)</li>
+                <li><strong>Robust control:</strong> Design control to work for a range of masses</li>
+                <li><strong>Learning-based:</strong> Use RL to learn control from different masses</li>
+            </ul>
+
+            <h4>Extension 4: Swing Damping / Energy Dissipation</h4>
+            <div class="concept-box">
+                <h4>Motivation</h4>
+                <p>Even with good control, payloads oscillate slightly. To stop oscillations, add damping.</p>
+            </div>
+
+            <p><strong>Approach:</strong> Use control torques to actively dissipate swing energy</p>
+
+            <h4>Extension 5: Obstacle Avoidance & Constraints</h4>
+            <div class="concept-box">
+                <h4>Motivation</h4>
+                <p>Real environments have obstacles. Need to avoid collisions while tracking trajectory.</p>
+            </div>
+
+            <p><strong>Approaches:</strong></p>
+            <ul>
+                <li>Model Predictive Control (MPC): Predict future states, optimize trajectory online</li>
+                <li>Barrier functions: Add constraints to cost function</li>
+            </ul>
+
+            <h3>11.2 Different Control Approaches Built on This Foundation</h3>
+
+            <h4>1. Model Predictive Control (MPC)</h4>
+            <p><strong>Idea:</strong> Use the 8-DOF model to predict future states and optimize control online</p>
+            <p><strong>Advantage:</strong> Can handle constraints (obstacle avoidance, thrust limits)</p>
+            <p><strong>Disadvantage:</strong> Computationally expensive</p>
+
+            <h4>2. Reinforcement Learning</h4>
+            <p><strong>Idea:</strong> Train a neural network policy on the 8-DOF dynamics to learn control</strong></p>
+            <p><strong>Advantage:</strong> Can learn complex behaviors, handle disturbances</p>
+            <p><strong>Disadvantage:</strong> Requires lots of data, stability not guaranteed</p>
+
+            <h4>3. Passivity-Based Control</h4>
+            <p><strong>Idea:</strong> Exploit energy conservation to design stable control laws</p>
+            <p><strong>Advantage:</strong> Provably stable, handles uncertainties</p>
+
+            <h4>4. Feedback Linearization</h4>
+            <p><strong>Idea:</strong> Use nonlinear feedback to cancel the system's nonlinearities, then apply linear control</p>
+            <p><strong>Advantage:</strong> Convert nonlinear system to linear one (easier to analyze)</p>
+
+            <h3>11.3 Connection to Your Project</h3>
+
+            <p>Your project compares 4 control methods, all of which build on the foundation from this paper:</p>
+
+            <ul>
+                <li><strong>Method 1: Barrier Lyapunov Control</strong> extends the stability analysis with constraints (swing bounds)</li>
+                <li><strong>Method 2: Residual RL Policy</strong> learns corrections on top of geometric control (this paper)</li>
+                <li><strong>Method 3: Pure RL Approach</strong> learns end-to-end on the 8-DOF model from this paper</li>
+                <li><strong>Method 4: Adaptive System ID</strong> estimates unknown mass online</li>
+            </ul>
+
+            <div class="section-summary">
+                <h4>Part 11 Summary</h4>
+                <ul>
+                    <li><strong>Extensions:</strong> Flexible cables, multiple drones, uncertain mass, damping, obstacles</li>
+                    <li><strong>Control methods:</strong> MPC, RL, passivity-based, feedback linearization</li>
+                    <li><strong>Your project:</strong> Compares 4 methods that all build on the foundation of this paper</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="part12">
+            <h2>PART 12: MATHEMATICAL NOTATION REFERENCE</h2>
+
+            <table class="notation-table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Meaning</th>
+                        <th>Type</th>
+                        <th>Dimension</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>$\mathbf{q}_m$</td>
+                        <td>Quadrotor position (center of mass)</td>
+                        <td>Position vector</td>
+                        <td>ℝ³</td>
+                    </tr>
+                    <tr>
+                        <td>$\mathbf{R}_m$</td>
+                        <td>Quadrotor attitude (rotation)</td>
+                        <td>Rotation matrix</td>
+                        <td>SO(3)</td>
+                    </tr>
+                    <tr>
+                        <td>$\boldsymbol{\omega}_m$</td>
+                        <td>Quadrotor angular velocity</td>
+                        <td>Vector</td>
+                        <td>ℝ³</td>
+                    </tr>
+                    <tr>
+                        <td>$\mathbf{q}_p$</td>
+                        <td>Payload position</td>
+                        <td>Position vector</td>
+                        <td>ℝ³</td>
+                    </tr>
+                    <tr>
+                        <td>$\boldsymbol{\sigma}$</td>
+                        <td>Cable direction (unit vector pointing to payload)</td>
+                        <td>Unit vector</td>
+                        <td>S²</td>
+                    </tr>
+                    <tr>
+                        <td>$\ell$</td>
+                        <td>Cable length</td>
+                        <td>Scalar</td>
+                        <td>ℝ > 0</td>
+                    </tr>
+                    <tr>
+                        <td>$T$</td>
+                        <td>Cable tension magnitude</td>
+                        <td>Scalar</td>
+                        <td>ℝ ≥ 0</td>
+                    </tr>
+                    <tr>
+                        <td>$m_m$</td>
+                        <td>Mass of quadrotor</td>
+                        <td>Scalar</td>
+                        <td>ℝ > 0</td>
+                    </tr>
+                    <tr>
+                        <td>$m_p$</td>
+                        <td>Mass of payload</td>
+                        <td>Scalar</td>
+                        <td>ℝ > 0</td>
+                    </tr>
+                    <tr>
+                        <td>$\mathbf{I}_m$</td>
+                        <td>Moment of inertia (quadrotor)</td>
+                        <td>3×3 matrix</td>
+                        <td>SO(3)</td>
+                    </tr>
+                    <tr>
+                        <td>$\mathbf{F}$</td>
+                        <td>Thrust vector (body frame)</td>
+                        <td>Vector</td>
+                        <td>ℝ³</td>
+                    </tr>
+                    <tr>
+                        <td>$\boldsymbol{\tau}$</td>
+                        <td>Control torque</td>
+                        <td>Vector</td>
+                        <td>ℝ³</td>
+                    </tr>
+                    <tr>
+                        <td>$\mathbf{e}_3$</td>
+                        <td>Unit vector pointing down: (0, 0, 1)ᵀ</td>
+                        <td>Unit vector</td>
+                        <td>ℝ³</td>
+                    </tr>
+                    <tr>
+                        <td>$g$</td>
+                        <td>Gravitational acceleration</td>
+                        <td>Scalar</td>
+                        <td>ℝ ≈ 9.81 m/s²</td>
+                    </tr>
+                    <tr>
+                        <td>SE(3)</td>
+                        <td>Special Euclidean group (rigid motions in 3D)</td>
+                        <td>Lie group</td>
+                        <td>6-dimensional manifold</td>
+                    </tr>
+                    <tr>
+                        <td>SO(3)</td>
+                        <td>Special Orthogonal group (3D rotations)</td>
+                        <td>Lie group</td>
+                        <td>3-dimensional manifold</td>
+                    </tr>
+                    <tr>
+                        <td>S²</td>
+                        <td>2-sphere (unit vectors in ℝ³)</td>
+                        <td>Manifold</td>
+                        <td>2-dimensional surface</td>
+                    </tr>
+                    <tr>
+                        <td>$[\cdot]_\times$</td>
+                        <td>Skew-symmetric operator (vector to matrix)</td>
+                        <td>Map</td>
+                        <td>ℝ³ → SO(3)</td>
+                    </tr>
+                    <tr>
+                        <td>$\psi_m$</td>
+                        <td>Yaw angle (rotation about vertical axis)</td>
+                        <td>Angle</td>
+                        <td>ℝ (rad)</td>
+                    </tr>
+                    <tr>
+                        <td>$V$</td>
+                        <td>Lyapunov function (energy-like function)</td>
+                        <td>Scalar function</td>
+                        <td>ℝ</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>12.1 Key Equations Summary</h3>
+
+            <div class="equation-box">
+SYSTEM CONFIGURATION:
+Configuration = (q_m, R_m, q_p, σ) ∈ SE(3) × S²
+Total DOF = 8
+Control inputs = 4
+
+CABLE CONSTRAINT:
+q_p = q_m + ℓ·σ
+|σ| = 1
+
+QUADROTOR DYNAMICS:
+m_m·ẍ_m = -m_m·g·e_3 + R_m·F - T·σ
+I_m·ω̇_m = -ω_m × (I_m·ω_m) + τ
+dR_m/dt = R_m·[ω_m]_×
+
+PAYLOAD DYNAMICS:
+m_p·ẍ_p = -m_p·g·e_3 + T·σ
+
+FLATNESS CONDITION:
+System is differentially flat with flat outputs:
+y_flat = (q_p, ψ_m)
+
+All states and inputs can be expressed as functions of y and its derivatives!
+
+STABILITY:
+With geometric control law:
+ė_R → 0 (attitude error converges)
+ė_q → 0 (position error converges)
+Convergence: exponential
+
+CABLE TENSION CONSTRAINT:
+T ≥ 0 (always!)
+If T would be negative → cable goes slack
+            </div>
+
+            <div class="section-summary">
+                <h4>Part 12 Summary</h4>
+                <ul>
+                    <li><strong>Reference table:</strong> All key symbols and their meanings</li>
+                    <li><strong>Key equations:</strong> System configuration, dynamics, flatness, stability</li>
+                    <li><strong>Use this as:</strong> Quick lookup when reading papers or implementing code</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="hr-line">
+
+        <section id="summary">
+            <h2>COMPREHENSIVE SUMMARY</h2>
+
+            <h3>The Big Picture</h3>
+
+            <div class="key-insight">
+                This seminal paper proved that a quadrotor carrying a cable-suspended payload is differentially flat, enabling direct trajectory generation and geometric control with proven stability guarantees. This mathematical insight transformed the problem from intractable nonlinear underactuated control into a systematic framework.
+            </div>
+
+            <h3>What You've Learned</h3>
+
+            <div class="success-box">
+                <h4>✓ Complete Understanding</h4>
+                <ul>
+                    <li><strong>Part 1:</strong> Why this problem is hard (8 DOF, 4 inputs, underactuated)</li>
+                    <li><strong>Part 2:</strong> System lives in SE(3) × S² space (non-Euclidean geometry)</li>
+                    <li><strong>Part 3:</strong> System dynamics (Lagrangian mechanics, nonlinear coupling)</li>
+                    <li><strong>Part 4:</strong> Differential flatness (payload position + yaw as flat outputs)</li>
+                    <li><strong>Part 5:</strong> Geometric control on SO(3) (avoids singularities)</li>
+                    <li><strong>Part 6:</strong> Stability proof using Lyapunov functions</li>
+                    <li><strong>Part 7:</strong> Trajectory generation algorithm (polynomial + algebra)</li>
+                    <li><strong>Part 8:</strong> Hybrid dynamics (slack cable modes)</li>
+                    <li><strong>Part 9:</strong> Theoretical contributions (4 main results)</li>
+                    <li><strong>Part 10:</strong> Practical applications (delivery, construction, monitoring)</li>
+                    <li><strong>Part 11:</strong> Extensions and future directions</li>
+                    <li><strong>Part 12:</strong> Mathematical notation reference</li>
+                </ul>
+            </div>
+
+            <h3>Key Concepts in One Page</h3>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Simple Explanation</th>
+                        <th>Why It Matters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Underactuation</strong></td>
+                        <td>8 DOF, 4 controls → Can't control everything independently</td>
+                        <td>Makes the problem fundamentally harder than simple systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SE(3)</strong></td>
+                        <td>Configuration space for rigid body motion (position + rotation)</td>
+                        <td>Explains why we need Lie group mathematics (rotations aren't vectors)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Differential Flatness</strong></td>
+                        <td>Can compute control inputs from desired path using only algebra</td>
+                        <td>Enables fast, efficient trajectory planning (no ODE solving!)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flat Outputs</strong></td>
+                        <td>Payload position + yaw angle characterize entire system behavior</td>
+                        <td>Payload is not directly actuated, yet its position "flattens" the system</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geometric Control</strong></td>
+                        <td>Control law that respects SO(3) geometry (no Euler angles)</td>
+                        <td>Avoids gimbal lock and singularities, enables global stability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lyapunov Stability</strong></td>
+                        <td>Proves tracking errors exponentially decay to zero</td>
+                        <td>Theoretical guarantee that the system actually works</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cable Tension Constraint</strong></td>
+                        <td>T ≥ 0 (cable can only pull, not push)</td>
+                        <td>Causes hybrid dynamics (slack cable mode) if violated</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>How This Relates to Your Research Project</h3>
+
+            <div class="concept-box">
+                <h4>Your Comparative Study</h4>
+                <p>You're comparing 4 control methods for the same 8-DOF system described in this paper:</p>
+                <ol>
+                    <li><strong>Barrier Lyapunov Control:</strong> Extends the stability analysis with swing constraints</li>
+                    <li><strong>Residual RL Policy:</strong> Learns corrections on top of geometric control (from this paper)</li>
+                    <li><strong>Pure RL Approach:</strong> Learns end-to-end control from the 8-DOF dynamics</li>
+                    <li><strong>Adaptive System ID:</strong> Handles unknown payload mass (relaxes parameter assumptions)</li>
+                </ol>
+
+                <p><strong>All methods use the same 8-DOF model from this foundational paper!</strong></p>
+            </div>
+
+            <h3>Reading Guide for Different Audiences</h3>
+
+            <h4>For Robotics Engineers:</h4>
+            <ol>
+                <li>Understand the problem (Part 1)</li>
+                <li>Learn system model (Part 2-3)</li>
+                <li>Understand flatness advantage (Part 4)</li>
+                <li>Study trajectory generation (Part 7)</li>
+                <li>Implement practical algorithm (Part 10)</li>
+            </ol>
+
+            <h4>For Control Theory Researchers:</h4>
+            <ol>
+                <li>Master configuration space geometry (Part 2)</li>
+                <li>Understand differential flatness deeply (Part 4)</li>
+                <li>Study geometric control on manifolds (Part 5)</li>
+                <li>Learn stability proof (Part 6)</li>
+                <li>Explore hybrid system analysis (Part 8)</li>
+            </ol>
+
+            <h4>For Machine Learning / RL Researchers:</h4>
+            <ol>
+                <li>Understand system dynamics (Part 3)</li>
+                <li>Note the underactuation and coupling (Part 2)</li>
+                <li>Learn the baseline control (Part 5)</li>
+                <li>Use flatness for trajectory generation in training (Part 4)</li>
+                <li>Reference this paper for performance benchmarking</li>
+            </ol>
+
+            <h3>One-Sentence Takeaway</h3>
+
+            <div class="key-insight">
+                Payload position and yaw angle are differential flat outputs for the quadrotor-cable-suspended payload system, enabling direct trajectory generation with proven exponential stability via geometric control on SE(3) manifolds.
+            </div>
+
+            <h3>Before You Move On</h3>
+
+            <h4>Self-Test Questions</h4>
+            <div class="challenge">
+                <strong>Can you answer these?</strong>
+                <ul>
+                    <li>Why is the system underactuated? (4 DOF degrees of underactuation - which 4?)</li>
+                    <li>What does "differential flatness" mean in plain English?</li>
+                    <li>Why is payload position a flat output even though it's not directly actuated?</li>
+                    <li>What's the advantage of geometric control over Euler angle-based control?</li>
+                    <li>How do you ensure cable tension stays positive?</li>
+                    <li>What happens if you need negative tension?</li>
+                </ul>
+            </div>
+
+            <h3>Next Steps for Your Research</h3>
+
+            <ol>
+                <li><strong>Read Paper 1:</strong> https://arxiv.org/pdf/1309.6717 (now you understand it!)</li>
+                <li><strong>Read Papers 2-3:</strong> The modeling and survey papers for context</li>
+                <li><strong>Read Papers 4-7:</strong> RL approaches (your Methods 2-3)</li>
+                <li><strong>Read Papers 8-13:</strong> Control theory and adaptive methods (your Methods 1 & 4)</li>
+                <li><strong>Read Papers 14-15:</strong> MuJoCo framework and benchmarking methodology</li>
+                <li><strong>Implement:</strong> Start with geometric control baseline (Part 5)</li>
+                <li><strong>Compare:</strong> Add your 4 methods and benchmark fairly</li>
+            </ol>
+        </section>
+
+        <hr class="hr-line">
+
+        <div class="footnote">
+            <p><strong>Total Learning Time:</strong> 4-6 hours for deep understanding (this document)</p>
+            <p><strong>Prerequisites Assumed:</strong> Multivariable calculus, linear algebra, basic control theory, differential equations</p>
+            <p><strong>Difficulty Level:</strong> Graduate-level robotics (Master's or PhD)</p>
+            <p><strong>After This:</strong> You're ready to read the actual paper and all follow-up work</p>
+        </div>
+    </div>
+</body>
+</html>
