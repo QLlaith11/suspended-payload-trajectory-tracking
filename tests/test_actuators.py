@@ -8,6 +8,7 @@ import pytest
 
 from sim import checks_actuators
 from sim.config import load_config
+from sim.model import bare_drone
 from sim.simulator import Simulator
 
 
@@ -26,7 +27,7 @@ def test_simulator_rates():
 
 
 def test_simulator_hover_ctbm():
-    cfg = load_config()
+    cfg = bare_drone(load_config())
     sim = Simulator(cfg, 500)
     f = sim.info.mass * cfg["sim"]["gravity"]
     for _ in range(500):  # 1 s

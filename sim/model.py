@@ -17,6 +17,16 @@ X2_SCENE = X2_DIR / "scene.xml"      # x2.xml + floor/skybox (visual only; conta
 DRONE_BODY = "x2"
 ROTOR_ACTUATORS = ("thrust1", "thrust2", "thrust3", "thrust4")
 COM_SITE = "drone_com"
+ATTACH_SITE = "cable_attach_drone"
+PAYLOAD_BODY = "payload"
+PAYLOAD_SITE = "payload_point"
+CABLE_JOINT = "cable_ball"
+
+
+def bare_drone(cfg: dict) -> dict:
+    """Same configuration without cable and payload (used by the bare-drone checks of steps 1.1-1.2)."""
+    from .config import deep_merge
+    return deep_merge(cfg, {"payload": {"model": "none"}})
 
 
 @dataclass
@@ -48,8 +58,6 @@ def build_spec(cfg: dict) -> mujoco.MjSpec:
 
     z0 = cfg["sim"]["start_altitude"]                                  # D9/B6: start at 2 m
     spec.body(DRONE_BODY).pos = [0.0, 0.0, z0]
-    for key in spec.keys:                                              # keep the "hover" keyframe consistent
-        key.qpos = [0.0, 0.0, z0, 1.0, 0.0, 0.0, 0.0]
 
     thrust_max = cfg["drone"]["rotor_thrust_max"]                      # D2/D8: 0-13 N
     tau_m = cfg["drone"]["motor_tau"]                                  # D8: 0 = ideal motors, 0.035 s benchmark
@@ -66,9 +74,53 @@ def build_spec(cfg: dict) -> mujoco.MjSpec:
 
     # Site at the drone CoM (cable attachment reference, D6/A3). The CoM is only known after compiling.
     tmp = spec.compile()
+    drone_mass = float(tmp.body_mass[tmp.body(DRONE_BODY).id])
     com = tmp.body_ipos[tmp.body(DRONE_BODY).id].copy()
-    spec.body(DRONE_BODY).add_site(name=COM_SITE, pos=com, size=[0.01, 0, 0], rgba=[1, 0, 0, 1], group=4)
+    drone = spec.body(DRONE_BODY)
+    drone.add_site(name=COM_SITE, pos=com, size=[0.01, 0, 0], rgba=[1, 0, 0, 1], group=4)
+
+    payload_mass = 0.0
+    if cfg["payload"]["model"] != "none":
+        payload_mass = _add_cable_and_payload(spec, cfg, com)
+
+    # Hover keyframe: drone at the start altitude, cable hanging straight down, hover thrust for the total mass.
+    hover = (drone_mass + payload_mass) * cfg["sim"]["gravity"] / 4
+    n_extra = 4 if cfg["payload"]["model"] != "none" else 0       # ball-joint quaternion (C1)
+    for key in spec.keys:
+        key.qpos = [0.0, 0.0, z0, 1.0, 0.0, 0.0, 0.0] + [1.0, 0.0, 0.0, 0.0][:n_extra]
+        key.ctrl = [hover] * 4
     return spec
+
+
+def _add_cable_and_payload(spec: mujoco.MjSpec, cfg: dict, com: np.ndarray) -> float:
+    """Add the cable and payload. Step 1.3: C1 (rigid massless link, ball joint) + P1 (point mass).
+
+    C1 (D3): the payload is a child body of the drone, connected by a ball joint at the attachment point, which is
+    the drone CoM plus `attach_offset_z` along body z (D6/A3). The ball joint has no singularity at any swing angle.
+    P1 (D6): point mass at distance L below the joint. The ball joint also allows twist about the cable, which has
+    no physical effect for a point mass; a tiny inertia (1e-6 kg m^2) only keeps MuJoCo's inertia positive.
+    """
+    cable, payload = cfg["cable"]["model"], cfg["payload"]["model"]
+    if cable != "C1" or payload != "P1":
+        raise NotImplementedError(f"cable {cable} / payload {payload} not implemented yet (step 1.3 = C1 + P1)")
+    L, m_L = cfg["cable"]["length"], cfg["payload"]["mass"]
+    attach = com + np.array([0.0, 0.0, cfg["cable"]["attach_offset_z"]])
+
+    drone = spec.body(DRONE_BODY)
+    drone.add_site(name=ATTACH_SITE, pos=attach, size=[0.008, 0, 0], rgba=[0, 0, 1, 1], group=4)
+    body = drone.add_body(name=PAYLOAD_BODY, pos=attach)
+    body.add_joint(name=CABLE_JOINT, type=mujoco.mjtJoint.mjJNT_BALL, damping=0.0)
+    body.explicitinertial = True
+    body.mass = m_L
+    body.ipos = [0.0, 0.0, -L]
+    body.inertia = [1e-6, 1e-6, 1e-6]
+    body.add_site(name=PAYLOAD_SITE, pos=[0.0, 0.0, -L], size=[0.01, 0, 0], group=4)
+    # Visual only (massless, no contacts)
+    body.add_geom(type=mujoco.mjtGeom.mjGEOM_CAPSULE, fromto=[0, 0, 0, 0, 0, -L], size=[0.003, 0, 0],
+                  mass=0.0, contype=0, conaffinity=0, group=2, rgba=[0.1, 0.1, 0.1, 1])
+    body.add_geom(type=mujoco.mjtGeom.mjGEOM_SPHERE, pos=[0.0, 0.0, -L], size=[0.035, 0, 0],
+                  mass=0.0, contype=0, conaffinity=0, group=2, rgba=[0.85, 0.35, 0.1, 1])
+    return m_L
 
 
 def build_model(cfg: dict) -> tuple[mujoco.MjModel, mujoco.MjData]:

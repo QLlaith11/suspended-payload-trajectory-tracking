@@ -6,7 +6,13 @@ import numpy as np
 
 from .actuators import Mixer
 from .config import deep_merge
-from .model import build_model, drone_info, reset
+from .model import bare_drone, drone_info, reset
+from .model import build_model as _build_model
+
+
+def build_model(cfg):
+    """Bare drone (no cable/payload): these checks validate the drone and actuators alone."""
+    return _build_model(bare_drone(cfg))
 
 
 def _random_feasible_wrenches(mixer: Mixer, n: int, rng: np.random.Generator) -> np.ndarray:

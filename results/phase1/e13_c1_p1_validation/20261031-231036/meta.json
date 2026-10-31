@@ -1,0 +1,20 @@
+{
+  "phase": "phase1",
+  "experiment": "e13_c1_p1_validation",
+  "git": {
+    "commit": "6abc0941ca4e36d96e1e5edd46946d151728aa38",
+    "dirty": true
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e13_c1_p1_validation.py",
+  "started": "2026-10-31 23:10:36",
+  "finished": "2026-10-31 23:10:46",
+  "wall_time_s": 9.404
+}

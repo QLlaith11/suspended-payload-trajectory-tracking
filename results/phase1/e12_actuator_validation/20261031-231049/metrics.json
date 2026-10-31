@@ -1,0 +1,22 @@
+{
+  "A1_round_trip.max_err": 7.105427357601002e-15,
+  "A1_round_trip.passed": true,
+  "A2_physics_wrench.max_err": 2.842170943040401e-14,
+  "A2_physics_wrench.max_lateral_force": 7.105427357601002e-15,
+  "A2_physics_wrench.passed": true,
+  "A3_rotational_response.max_err_rad_s2": 1.4210854715202004e-14,
+  "A3_rotational_response.passed": true,
+  "A4_saturation.a_thrust_too_high": true,
+  "A4_saturation.b_yaw_reduced_first": true,
+  "A4_saturation.c_roll_scaled": true,
+  "A4_saturation.d_feasible_unchanged": true,
+  "A4_saturation.bounds_respected": true,
+  "A4_saturation.passed": true,
+  "A5_motor_lag.max_err_N": 6.276495767565393e-09,
+  "A5_motor_lag.fraction_at_tau": 0.6321205567363926,
+  "A5_motor_lag.ideal_instant": true,
+  "A5_motor_lag.passed": true,
+  "A6_timestep.pos_diff_m": 6.72035618381981e-09,
+  "A6_timestep.passed": true,
+  "all_passed": true
+}
