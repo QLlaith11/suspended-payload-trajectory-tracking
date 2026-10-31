@@ -1,0 +1,20 @@
+{
+  "G1_properties.mass_kg": 1.325,
+  "G1_properties.mass_err": 0.0,
+  "G1_properties.inertia_max_err": 2e-06,
+  "G1_properties.com_max_err_m": 3.77358e-05,
+  "G1_properties.passed": true,
+  "G2_hover.hover_thrust_per_rotor_N": 3.24956,
+  "G2_hover.max_drift_m": 0.0,
+  "G2_hover.max_rotation_deg": 0.0,
+  "G2_hover.passed": true,
+  "G3_free_fall.max_abs_err_m": 3.68594e-14,
+  "G3_free_fall.passed": true,
+  "G4_drag.vz_end_no_drag": -19.62,
+  "G4_drag.vz_end_with_drag": -8.74557,
+  "G4_drag.drag_force_at_5mps_N": 4.09317,
+  "G4_drag.passed": true,
+  "G5_timestep.pos_diff_m": 3.40693e-10,
+  "G5_timestep.passed": true,
+  "all_passed": true
+}

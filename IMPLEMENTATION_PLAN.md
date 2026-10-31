@@ -1,7 +1,7 @@
 # Implementation Plan — Suspended-Payload Quadrotor Simulation
 
 Companion to `SIMULATION_DESIGN.md` (the *why*). This file tracks the *how* and progress.
-Created 2026-10-31. Status: **Step 0.1 done.**
+Created 2026-10-31. Status: **Step 1.1 done.**
 
 ## Working rules (agreed)
 - **Own implementation.** Udaan (BSD-3, Kotaru) is used only as an independent cross-check, never copied.
@@ -32,7 +32,7 @@ Tools: numpy, scipy, matplotlib, pyyaml, pytest (Optuna from Phase 3).
 ## Phase 1 — Simulation core (only what Paper 1 needs)
 | Step | Build | Validation gate |
 |---|---|---|
-| [ ] 1.1 | Skydio X2 from Menagerie; dt = 1 ms, RK4; fluid drag switchable | hover at exact hover thrust → zero drift; mass, inertia, CoM equal the measured values (D2) |
+| [x] 1.1 | Skydio X2 from Menagerie; dt = 1 ms, RK4; fluid drag switchable | hover at exact hover thrust → zero drift; mass, inertia, CoM equal the measured values (D2) |
 | [ ] 1.2 | Actuator stack: CTBM → mixer (real rotor positions) → 0–13 N limits; motor lag switchable (0 / 35 ms) | commanded thrust/torques reproduced exactly; motor step response matches τ_m |
 | [ ] 1.3 | Cable C1 (rigid massless link, ball joint) + payload P1 (point mass); attachment at drone CoM | X1: tension = m·g at rest; X2: swing period vs two-body pendulum formula; energy conserved with motors off; 1 ms vs 0.5 ms identical |
 | [ ] 1.4 | Snap-smooth trajectories, logging, metrics (D9) | unit tests: analytic derivatives vs numerical; metrics on synthetic signals |
@@ -64,3 +64,4 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 |---|---|---|---|
 | 2026-10-31 | Plan | written and agreed | ✅ |
 | 2026-10-31 | 0.1 Setup | 3/3 tests pass; dummy run folder complete (config, meta, metrics, data, figure, README) | ✅ |
+| 2026-10-31 | 1.1 X2 model | G1–G5 pass (hover drift 0, free-fall err 4e-14 m, dt err 3e-10 m); 6/6 tests; drag finding noted | ✅ |

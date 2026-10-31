@@ -30,6 +30,15 @@ def _git(*args: str) -> str:
         return ""
 
 
+def _to_builtin(value):
+    """Convert numpy scalars/arrays to plain Python types so they can be written as JSON."""
+    if isinstance(value, np.generic):
+        return value.item()
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    return value
+
+
 def git_info() -> dict:
     commit = _git("rev-parse", "HEAD")
     dirty = bool(_git("status", "--porcelain", "--untracked-files=no"))
@@ -82,7 +91,7 @@ class RunRecorder:
         np.savez_compressed(self.dir / "data.npz", **arrays)
 
     def save_metrics(self, metrics: dict) -> None:
-        self.metrics.update(metrics)
+        self.metrics.update({k: _to_builtin(v) for k, v in metrics.items()})
         with open(self.dir / "metrics.json", "w") as f:
             json.dump(self.metrics, f, indent=2)
 

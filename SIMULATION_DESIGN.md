@@ -454,6 +454,7 @@ arXiv 1309.6717, points to Goodarzi et al.). Paper PDF: https://hybrid-robotics.
 | C3 | risk | C2 soft tendon limit: tune solref/solimp, stretch < 1 mm (D3) |
 | C4 | risk | staged experiment matrix instead of full factorial (D9) |
 | — | cosmetic | D5 moved to numeric order |
+| F1 | finding (Step 1.1) | MuJoCo fluid drag on X2 is quadratic: horizontal ≈ 0.10 N at 2 m/s, 0.63 N at 5 m/s; vertical 4.1 N at 5 m/s. Real rotor drag is ≈ linear at low speed (Faessler 2018) and likely several times larger at 1–3 m/s → MuJoCo probably underestimates low-speed horizontal drag beyond D11's ±30 %. Only affects L1/L2; decide in the L1 phase whether to add a linear rotor-drag term. |
 
 ## Sources
 - MuJoCo Menagerie: https://github.com/google-deepmind/mujoco_menagerie
