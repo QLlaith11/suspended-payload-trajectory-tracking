@@ -52,8 +52,17 @@ def build_spec(cfg: dict) -> mujoco.MjSpec:
         key.qpos = [0.0, 0.0, z0, 1.0, 0.0, 0.0, 0.0]
 
     thrust_max = cfg["drone"]["rotor_thrust_max"]                      # D2/D8: 0-13 N
+    tau_m = cfg["drone"]["motor_tau"]                                  # D8: 0 = ideal motors, 0.035 s benchmark
     for name in ROTOR_ACTUATORS:
-        spec.actuator(name).ctrlrange = [0.0, thrust_max]
+        act = spec.actuator(name)
+        act.ctrlrange = [0.0, thrust_max]
+        if tau_m > 0:
+            # First-order motor lag on rotor thrust, integrated by MuJoCo itself (MJX-compatible):
+            # tau_m * d(f)/dt = f_cmd - f ; actuator force = activation f.
+            # Plain FILTER (not FILTEREXACT): under RK4 it is integrated to 6e-9 N, whereas FILTEREXACT is only
+            # exact under Euler/implicit and has 1.6e-2 N error under RK4 (checked in step 1.2).
+            act.dyntype = mujoco.mjtDyn.mjDYN_FILTER
+            act.dynprm[0] = tau_m
 
     # Site at the drone CoM (cable attachment reference, D6/A3). The CoM is only known after compiling.
     tmp = spec.compile()
@@ -72,6 +81,8 @@ def build_model(cfg: dict) -> tuple[mujoco.MjModel, mujoco.MjData]:
 def reset(model: mujoco.MjModel, data: mujoco.MjData) -> None:
     """Reset to the 'hover' keyframe: drone at start altitude, level, at rest, hover thrust."""
     mujoco.mj_resetDataKeyframe(model, data, model.key("hover").id)
+    if model.na:                       # motor lag on: start the motors in steady state at the commanded thrust
+        data.act[:] = data.ctrl[:]
     mujoco.mj_forward(model, data)
 
 
