@@ -1,0 +1,20 @@
+{
+  "phase": "phase1",
+  "experiment": "e14_trajectories_metrics",
+  "git": {
+    "commit": "399249526cffc680e74c999819f47bc2903fc881",
+    "dirty": false
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e14_trajectories_metrics.py",
+  "started": "2026-10-31 23:21:11",
+  "finished": "2026-10-31 23:21:30",
+  "wall_time_s": 19.117
+}

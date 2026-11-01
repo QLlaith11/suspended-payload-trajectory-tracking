@@ -1,7 +1,7 @@
 # Implementation Plan — Suspended-Payload Quadrotor Simulation
 
 Companion to `SIMULATION_DESIGN.md` (the *why*). This file tracks the *how* and progress.
-Created 2026-10-31. Status: **Step 1.3 done.**
+Created 2026-10-31. Status: **Phase 1 complete (steps 1.1–1.4).**
 
 ## Working rules (agreed)
 - **Own implementation.** Udaan (BSD-3, Kotaru) is used only as an independent cross-check, never copied.
@@ -35,7 +35,7 @@ Tools: numpy, scipy, matplotlib, pyyaml, pytest (Optuna from Phase 3).
 | [x] 1.1 | Skydio X2 from Menagerie; dt = 1 ms, RK4; fluid drag switchable | hover at exact hover thrust → zero drift; mass, inertia, CoM equal the measured values (D2) |
 | [x] 1.2 | Actuator stack: CTBM → mixer (real rotor positions) → 0–13 N limits; motor lag switchable (0 / 35 ms) | commanded thrust/torques reproduced exactly; motor step response matches τ_m |
 | [x] 1.3 | Cable C1 (rigid massless link, ball joint) + payload P1 (point mass); attachment at drone CoM | X1: tension = m·g at rest; X2: swing period vs two-body pendulum formula; energy conserved with motors off; 1 ms vs 0.5 ms identical |
-| [ ] 1.4 | Snap-smooth trajectories, logging, metrics (D9) | unit tests: analytic derivatives vs numerical; metrics on synthetic signals |
+| [x] 1.4 | Snap-smooth trajectories, logging, metrics (D9) | unit tests: analytic derivatives vs numerical; metrics on synthetic signals |
 
 ## Phase 2 — Paper 1 re-implementation (Sreenath, Lee, Kumar, CDC 2013)
 Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 m / 0.2 kg unless stated.
@@ -67,3 +67,4 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 | 2026-10-31 | 1.1 X2 model | G1–G5 pass (hover drift 0, free-fall err 4e-14 m, dt err 3e-10 m); 6/6 tests; drag finding noted | ✅ |
 | 2026-10-31 | 1.2 Actuators | A1–A6 pass (wrench err 3e-14, lag err 6e-9 N, dt err 7e-9 m); 14/14 tests; FILTER instead of FILTEREXACT under RK4 (F2) | ✅ |
 | 2026-10-31 | 1.3 C1 + P1 | P1–P7 pass (tension err 0, swing period vs theory ≤ 0.012 % for 0.25/0.5/1.0 m, energy drift 1.3e-7 J, length err 3e-15 m, dt err 5e-8 m, P6 converges at 4×); 23/23 tests | ✅ |
+| 2026-10-31 | 1.4 Trajectories, metrics, logger | M1–M5 pass (derivatives vs symbolic oracle ≤ 1.4e-11 rel, ramp joins continuous (10× shrink), aggressiveness exact, metrics on known signals, logger bit-identical); 30/30 tests; T4/T5 deferred to Phase 3 | ✅ |

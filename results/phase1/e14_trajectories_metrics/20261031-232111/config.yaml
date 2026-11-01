@@ -1,0 +1,27 @@
+sim:
+  dt: 0.001
+  integrator: RK4
+  gravity: 9.81
+  contacts: false
+  start_altitude: 2.0
+rates:
+  rate_loop_hz: 500
+  outer_loop_hz: 100
+drone:
+  model: skydio_x2
+  rotor_thrust_max: 13.0
+  motor_tau: 0.0
+cable:
+  model: C1
+  length: 0.5
+  EA: 125.0
+  cL: 0.875
+  linear_density: 0.01
+  attach_offset_z: 0.0
+payload:
+  model: P1
+  mass: 0.2
+realism:
+  level: L0
+  fluid_drag: false
+seed: 0
