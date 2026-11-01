@@ -1,0 +1,20 @@
+{
+  "phase": "phase2",
+  "experiment": "e21_flatness",
+  "git": {
+    "commit": "2672d9b2eab252d7864d17190ff33bf4efb0f321",
+    "dirty": true
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e21_flatness.py --udaan-src /tmp/claude-1000/-home-haidar-Trajectory-Tracking-of-a-Suspended-Payload/2d93e21c-1469-42a9-beb1-612150680c24/scratchpad/udaan_src",
+  "started": "2026-11-01 11:12:17",
+  "finished": "2026-11-01 11:12:42",
+  "wall_time_s": 25.171
+}

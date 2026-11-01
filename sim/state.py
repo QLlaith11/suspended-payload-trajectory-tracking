@@ -57,6 +57,40 @@ def get_state(model: mujoco.MjModel, data: mujoco.MjData) -> State:
     return s
 
 
+def set_state(model: mujoco.MjModel, data: mujoco.MjData, x_Q, v_Q, R, Omega, q=None, q_dot=None) -> None:
+    """Put the simulator exactly into a given state (drone CoM position/velocity, attitude, body rates and, for
+    cable C1, cable direction and rate). Inverse of get_state; used to start from a flat state."""
+    b = model.body(DRONE_BODY).id
+    R = np.asarray(R, float)
+    com = model.body_ipos[b]                                   # CoM in the body frame
+    quat = np.zeros(4)
+    mujoco.mju_mat2Quat(quat, R.reshape(9))
+    data.qpos[0:3] = np.asarray(x_Q) - R @ com                 # free joint position = body origin
+    data.qpos[3:7] = quat
+    w_drone = R @ np.asarray(Omega, float)                     # drone angular velocity, world axes
+    data.qvel[0:3] = np.asarray(v_Q) - np.cross(w_drone, R @ com)
+    data.qvel[3:6] = Omega
+    if q is not None:
+        if model.nq < 11:
+            raise ValueError("model has no C1 cable joint")
+        q, q_dot = np.asarray(q, float), np.asarray(q_dot, float)
+        v = R.T @ q                                            # cable direction in drone axes
+        down = np.array([0.0, 0.0, -1.0])
+        axis = np.cross(down, v)
+        s, c = np.linalg.norm(axis), float(down @ v)
+        angle = np.arctan2(s, c)
+        axis = axis / s if s > 1e-12 else np.array([1.0, 0.0, 0.0])
+        q_ball = np.array([np.cos(angle / 2), *(np.sin(angle / 2) * axis)])
+        data.qpos[7:11] = q_ball
+        R_ball = np.zeros(9)
+        mujoco.mju_quat2Mat(R_ball, q_ball)
+        R_child = R @ R_ball.reshape(3, 3)
+        # child angular velocity: swing q x q_dot, twist taken equal to the drone's (no relative twist)
+        w_child = np.cross(q, q_dot) + (w_drone @ q) * q
+        data.qvel[6:9] = R_child.T @ (w_child - w_drone)       # ball joint: relative, child axes
+    mujoco.mj_forward(model, data)
+
+
 def cable_tension(model: mujoco.MjModel, data: mujoco.MjData, g: float) -> float:
     """Signed cable tension at the current state: T = -m_L q . (a_L + g e3).
 
