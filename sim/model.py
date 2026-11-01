@@ -38,6 +38,7 @@ class DroneInfo:
     rotor_pos: np.ndarray      # 4x3 rotor (thrust site) positions in the body frame [m]
     yaw_coeff: np.ndarray      # 4 signed yaw-torque/thrust ratios [m]
     thrust_max: float          # [N] per rotor
+    thrust_min: float = 0.0    # [N] per rotor
 
     def hover_thrust_per_rotor(self, g: float = 9.81) -> float:
         return self.mass * g / 4
@@ -63,7 +64,10 @@ def build_spec(cfg: dict) -> mujoco.MjSpec:
     tau_m = cfg["drone"]["motor_tau"]                                  # D8: 0 = ideal motors, 0.035 s benchmark
     for name in ROTOR_ACTUATORS:
         act = spec.actuator(name)
-        act.ctrlrange = [0.0, thrust_max]
+        if cfg["drone"].get("ideal_actuator", False):   # Paper 1's assumption: no input limits (theory checks)
+            act.ctrlrange = [-1e6, 1e6]
+        else:
+            act.ctrlrange = [0.0, thrust_max]
         if tau_m > 0:
             # First-order motor lag on rotor thrust, integrated by MuJoCo itself (MJX-compatible):
             # tau_m * d(f)/dt = f_cmd - f ; actuator force = activation f.
@@ -152,4 +156,5 @@ def drone_info(model: mujoco.MjModel) -> DroneInfo:
         rotor_pos=np.array([model.site_pos[a.trnid[0]] for a in acts]),
         yaw_coeff=np.array([a.gear[5] for a in acts]),
         thrust_max=float(acts[0].ctrlrange[1]),
+        thrust_min=float(acts[0].ctrlrange[0]),
     )

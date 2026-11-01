@@ -29,10 +29,10 @@ class Mixer:
     3. yaw torque (reduced first).
     """
 
-    def __init__(self, info: DroneInfo, f_min: float = 0.0, f_max: float | None = None):
+    def __init__(self, info: DroneInfo, f_min: float | None = None, f_max: float | None = None):
         self.B = allocation_matrix(info)
         self.B_inv = np.linalg.inv(self.B)
-        self.f_min = f_min
+        self.f_min = info.thrust_min if f_min is None else f_min
         self.f_max = info.thrust_max if f_max is None else f_max
         self.w_thrust = self.B_inv[:, 0]      # rotor pattern per newton of collective thrust
         self.w_rp = self.B_inv[:, 1:3]        # roll/pitch patterns (sum to zero)

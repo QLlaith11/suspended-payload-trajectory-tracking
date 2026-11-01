@@ -1,0 +1,20 @@
+{
+  "phase": "phase2",
+  "experiment": "e22_geometric_control",
+  "git": {
+    "commit": "cfda782ba4bbbad21f1337dfff1993068f628011",
+    "dirty": true
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e22_geometric_control.py",
+  "started": "2026-11-01 11:39:05",
+  "finished": "2026-11-01 11:40:58",
+  "wall_time_s": 113.123
+}

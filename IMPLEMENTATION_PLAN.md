@@ -1,7 +1,7 @@
 # Implementation Plan — Suspended-Payload Quadrotor Simulation
 
 Companion to `SIMULATION_DESIGN.md` (the *why*). This file tracks the *how* and progress.
-Created 2026-10-31. Status: **Phase 1 complete; Step 2.1 done.**
+Created 2026-10-31. Status: **Phase 1 complete; Step 2.2 done.**
 
 ## Working rules (agreed)
 - **Own implementation.** Udaan (BSD-3, Kotaru) is used only as an independent cross-check, never copied.
@@ -43,7 +43,7 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 | Step | Build / experiment | Validation |
 |---|---|---|
 | [x] 2.1 | Flatness map: load trajectory (derivatives up to 6th order) → cable direction q, tension T, quad position, attitude R, rates Ω | matches Udaan's flatness module; open-loop feed-forward on the simulator reproduces the load path |
-| [ ] 2.2 | Geometric controller, three modes: quad attitude → load attitude → load position | each mode stabilises from moderate errors; behaviour consistent with the paper's stability results |
+| [x] 2.2 | Geometric controller, three modes: quad attitude → load attitude → load position | each mode stabilises from moderate errors; behaviour consistent with the paper's stability results |
 | [ ] 2.3 | E1.1 Flatness study: ellipse x_L = (A_x sin 2πt/T₀, A_y cos 2πt/T₀, A_z), ψ = 0, T₀ = 10 → 1 s | reproduce the paper's Fig. 3 trend; find T₀ at which the X2's 13 N rotor limit is reached (new result) |
 | [ ] 2.4 | E1.2 Recovery: quad flipped 178°, load 178°, large position error | recovery and tracking; note whether rotor limits allow it on the X2 |
 | [ ] 2.5 | E1.3 Benchmark subset: T0–T3 (D9) at nominal settings | first entries of the benchmark results table |
@@ -69,3 +69,4 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 | 2026-10-31 | 1.3 C1 + P1 | P1–P7 pass (tension err 0, swing period vs theory ≤ 0.012 % for 0.25/0.5/1.0 m, energy drift 1.3e-7 J, length err 3e-15 m, dt err 5e-8 m, P6 converges at 4×); 23/23 tests | ✅ |
 | 2026-10-31 | 1.4 Trajectories, metrics, logger | M1–M5 pass (derivatives vs symbolic oracle ≤ 1.4e-11 rel, ramp joins continuous (10× shrink), aggressiveness exact, metrics on known signals, logger bit-identical); 30/30 tests; T4/T5 deferred to Phase 3 | ✅ |
 | 2026-11-01 | 2.1 Flatness map | F1–F6 pass (hover exact; EOM residual 1e-14; rates converge 4×; open-loop replay in MuJoCo within 1 cm for 2.9 s / >6 s / >6 s; Udaan agreement 1.1e-13; free-fall guard); 37/37 tests | ✅ |
+| 2026-11-01 | 2.2 Geometric controller | K1–K7 pass (attitude decay 28.4 vs 27/s; cable 7.6 vs 6.75/s; 1 m step settles 2.87 vs 2.83 s; tracking ≤ 0.17 mm; ablation flat 0.05 mm / numdiff 12.5 mm / zero 0.67 m); gains revised to 1.5/7.5/30 (F3); 46/46 tests | ✅ |

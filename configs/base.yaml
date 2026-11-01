@@ -15,6 +15,7 @@ rates:
 drone:                   # Skydio X2, MuJoCo Menagerie (D2)
   model: skydio_x2
   rotor_thrust_max: 13.0 # [N] per rotor (D2, D8)
+  ideal_actuator: false  # true = unlimited rotor thrust (incl. negative), Paper 1 theory checks only (step 2.2)
   motor_tau: 0.0         # [s] 0 = ideal motors; 0.035 in main benchmark (D8)
 
 cable:
