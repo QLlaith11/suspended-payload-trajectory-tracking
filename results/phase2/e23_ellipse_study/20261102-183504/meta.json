@@ -1,0 +1,20 @@
+{
+  "phase": "phase2",
+  "experiment": "e23_ellipse_study",
+  "git": {
+    "commit": "75a948c0b6acd381046ef931b63c03d80129b6e5",
+    "dirty": false
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e23_ellipse_study.py",
+  "started": "2026-11-02 18:35:04",
+  "finished": "2026-11-02 18:41:02",
+  "wall_time_s": 358.087
+}
