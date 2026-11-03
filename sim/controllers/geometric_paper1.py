@@ -159,7 +159,7 @@ class GeometricController:
         Rc = self.computed_attitude(F)
         Om_c, Om_c_dot = self._attitude_rates(Rc, flat)
         f = F @ s.R[:, 2]                                             # Eq. (32)
-        self.last.update(F=F, R_c=Rc)
+        self.last.update(F=F, R_c=Rc, Omega_c=Om_c, Omega_c_dot=Om_c_dot, f=f)
         return np.array([f, *self.attitude_moment(s.R, s.Omega, Rc, Om_c, Om_c_dot)])
 
     # ------------------------------------------------------------------ (c) load position, Eqs. (36)-(38)

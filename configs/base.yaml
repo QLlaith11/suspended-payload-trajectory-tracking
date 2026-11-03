@@ -33,5 +33,12 @@ payload:
 realism:
   level: L0              # L0 ideal, L1 realistic, L2 sensorless payload (D10)
   fluid_drag: false      # MuJoCo fluid model on in L1/L2 (D10)
+  sensor_noise: false    # L1: mocap-like noise on drone and payload state (D10)
+  noise:                 # 1-sigma, per axis (D10)
+    pos: 0.01            # [m]
+    vel: 0.05            # [m/s]
+    att_deg: 1.0         # [deg]
+    gyro: 0.05           # [rad/s]
+  action_delay: 0.0      # [s] L1: 0.01 (one outer-loop step at 100 Hz, D10)
 
 seed: 0

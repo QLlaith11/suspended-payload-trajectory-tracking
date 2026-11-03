@@ -133,8 +133,9 @@ def _add_cable_and_payload(spec: mujoco.MjSpec, cfg: dict, com: np.ndarray) -> f
     # Visual only (massless, no contacts)
     body.add_geom(type=mujoco.mjtGeom.mjGEOM_CAPSULE, fromto=[0, 0, 0, 0, 0, -L], size=[0.003, 0, 0],
                   mass=0.0, contype=0, conaffinity=0, group=2, rgba=[0.1, 0.1, 0.1, 1])
-    body.add_geom(type=mujoco.mjtGeom.mjGEOM_SPHERE, pos=[0.0, 0.0, -L], size=[0.035, 0, 0],
-                  mass=0.0, contype=0, conaffinity=0, group=2, rgba=[0.85, 0.35, 0.1, 1])
+    ball = body.add_geom(type=mujoco.mjtGeom.mjGEOM_SPHERE, pos=[0.0, 0.0, -L], size=[0.035, 0, 0],
+                         mass=0.0, contype=0, conaffinity=0, group=2, rgba=[0.85, 0.35, 0.1, 1])
+    _payload_drag(ball, cfg)
     return m_L
 
 
@@ -143,6 +144,19 @@ def _add_cable_and_payload(spec: mujoco.MjSpec, cfg: dict, com: np.ndarray) -> f
 # the snap impulse worse at 1 ms (-35 % vs -20 %) -> 4 ms kept (step 2.6a, finding F6).
 C2_SOLREF = (0.004, 1.0)
 C2_SOLIMP = (0.99, 0.999, 0.001, 0.5, 2.0)
+
+
+def _payload_drag(geom, cfg: dict) -> None:
+    """D10 / L1: air drag on the payload. MuJoCo's default fluid model uses the body's equivalent inertia box, which
+    for a point mass (inertia 1e-6) is ~1 mm wide -> no drag. The geom-based ellipsoid model uses the 3.5 cm sphere
+    instead (step 2.6c-1). The drone keeps MuJoCo's default (inertia-box) model, as in the Menagerie file (F1)."""
+    if cfg["realism"]["fluid_drag"]:
+        geom.fluid_ellipsoid = 1.0
+        # MuJoCo blunt drag is F = -C_blunt rho A |v| v (no 1/2), default C_blunt = 0.5 -> C_D = 1.0. A smooth sphere at
+        # Re ~ 1e4 has C_D ~ 0.47 -> C_blunt = 0.235 (step 2.6c-1, gate R7). Other coefficients: MuJoCo defaults.
+        coefs = list(geom.fluid_coefs)
+        coefs[0] = 0.235
+        geom.fluid_coefs = coefs
 
 
 def _add_c2(spec: mujoco.MjSpec, cfg: dict, attach: np.ndarray, L: float, m_L: float) -> None:
@@ -157,8 +171,9 @@ def _add_c2(spec: mujoco.MjSpec, cfg: dict, attach: np.ndarray, L: float, m_L: f
     body.ipos = [0.0, 0.0, 0.0]
     body.inertia = [1e-6, 1e-6, 1e-6]
     body.add_site(name=PAYLOAD_SITE, pos=[0.0, 0.0, 0.0], size=[0.01, 0, 0], group=4)
-    body.add_geom(type=mujoco.mjtGeom.mjGEOM_SPHERE, size=[0.035, 0, 0], mass=0.0, contype=0, conaffinity=0,
-                  group=2, rgba=[0.85, 0.35, 0.1, 1])
+    ball = body.add_geom(type=mujoco.mjtGeom.mjGEOM_SPHERE, size=[0.035, 0, 0], mass=0.0, contype=0,
+                         conaffinity=0, group=2, rgba=[0.85, 0.35, 0.1, 1])
+    _payload_drag(ball, cfg)
     t = spec.add_tendon(name=CABLE_TENDON)
     t.limited = mujoco.mjtLimited.mjLIMITED_TRUE
     t.range = [0.0, L]
