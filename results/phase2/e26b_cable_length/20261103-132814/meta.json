@@ -1,0 +1,20 @@
+{
+  "phase": "phase2",
+  "experiment": "e26b_cable_length",
+  "git": {
+    "commit": "acfaa5e3bdb3eafefce7a14bdfdd628674af7d28",
+    "dirty": false
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e26b_cable_length.py",
+  "started": "2026-11-03 13:28:14",
+  "finished": "2026-11-03 13:45:30",
+  "wall_time_s": 1036.571
+}
