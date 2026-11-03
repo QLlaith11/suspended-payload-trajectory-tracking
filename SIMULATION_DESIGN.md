@@ -275,7 +275,9 @@ Aggressiveness is defined physically (peak acceleration as a fraction of g; peri
 so results are comparable across cable lengths (RoVerFly idea).
 
 **Trajectory details (review fix B5)** — final values fixed in the implementation spec:
-- T0 gust: lateral force 2 N on the payload for 0.5 s.
+- T0 gust: lateral force on the payload for 0.5 s. **Revised in step 2.5 (agreed):** main level = 0.25 g × payload
+  mass (0.49 N for 0.2 kg), so it scales with mass; severe level = 2 N (original value; 1 g on 0.2 kg, beyond the
+  0.5 m success limit even with ideal actuators).
 - T3 figure-8: amplitude 1 m (x) × 0.5 m (y).
 - T4 random set: amplitudes ≤ 1.5 m, frequencies capped so that peak payload acceleration ≤ 1 g; fixed seeds;
   separate tuning/training split and held-out test split.

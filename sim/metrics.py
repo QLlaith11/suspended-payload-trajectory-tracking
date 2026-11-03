@@ -32,7 +32,7 @@ def settling_time(t: np.ndarray, err: np.ndarray, t_from: float, band: float = S
     t_settle = tt[0] if len(outside) == 0 else (tt[outside[-1] + 1] if outside[-1] + 1 < len(tt) else np.nan)
     if np.isnan(t_settle) or tt[-1] - t_settle < hold - 1e-9:
         return float("nan")
-    return float(t_settle - t_from)
+    return float(max(0.0, t_settle - t_from))       # max(): removes -0.0 from float round-off
 
 
 def compute_metrics(log: dict, dt_control: float, t_end: float | None = None, q_ref: np.ndarray | None = None,

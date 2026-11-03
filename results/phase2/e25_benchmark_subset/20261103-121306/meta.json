@@ -1,0 +1,20 @@
+{
+  "phase": "phase2",
+  "experiment": "e25_benchmark_subset",
+  "git": {
+    "commit": "0b49428e2f184dfa5136a45d1186ae3afbc185b5",
+    "dirty": true
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e25_benchmark_subset.py",
+  "started": "2026-11-03 12:13:06",
+  "finished": "2026-11-03 12:18:55",
+  "wall_time_s": 349.506
+}
