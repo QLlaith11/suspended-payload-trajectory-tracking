@@ -28,6 +28,7 @@ class State:
     q_dot: np.ndarray | None = None
     omega: np.ndarray | None = None
     cable_length: float | None = None
+    cable_length_rate: float | None = None     # d|x_L - x_A|/dt (0 for C1; nonzero for C2 while slack)
 
 
 def _site_velocity(model, data, site: str) -> np.ndarray:
@@ -52,8 +53,11 @@ def get_state(model: mujoco.MjModel, data: mujoco.MjData) -> State:
         length = float(np.linalg.norm(d))
         q = d / length
         q_dot = (v_L - v_A) / length
-        q_dot -= q * (q @ q_dot)                     # exact for a rigid link; removes round-off along q
+        length_rate = float(q @ (v_L - v_A))
+        q_dot -= q * (q @ q_dot)                     # tangent part (exact for C1; for C2 the radial part = length
+                                                     # rate, reported separately in cable_length_rate)
         s.x_L, s.v_L, s.q, s.q_dot, s.omega, s.cable_length = x_L, v_L, q, q_dot, np.cross(q, q_dot), length
+        s.cable_length_rate = length_rate
     return s
 
 
@@ -70,6 +74,18 @@ def set_state(model: mujoco.MjModel, data: mujoco.MjData, x_Q, v_Q, R, Omega, q=
     w_drone = R @ np.asarray(Omega, float)                     # drone angular velocity, world axes
     data.qvel[0:3] = np.asarray(v_Q) - np.cross(w_drone, R @ com)
     data.qvel[3:6] = Omega
+    if q is not None and model.njnt > 1 and model.jnt_type[1] == mujoco.mjtJoint.mjJNT_FREE:   # C2: free payload
+        q, q_dot = np.asarray(q, float), np.asarray(q_dot, float)
+        L = float(model.tendon_range[0, 1])
+        a_loc = model.site_pos[model.site(ATTACH_SITE).id]
+        x_A = data.qpos[0:3] + R @ a_loc
+        v_A = data.qvel[0:3] + np.cross(w_drone, R @ a_loc)
+        data.qpos[7:10] = x_A + L * q
+        data.qpos[10:14] = [1.0, 0.0, 0.0, 0.0]
+        data.qvel[6:9] = v_A + L * q_dot
+        data.qvel[9:12] = 0.0
+        mujoco.mj_forward(model, data)
+        return
     if q is not None:
         if model.nq < 11:
             raise ValueError("model has no C1 cable joint")
