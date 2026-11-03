@@ -45,7 +45,7 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 | [x] 2.1 | Flatness map: load trajectory (derivatives up to 6th order) → cable direction q, tension T, quad position, attitude R, rates Ω | matches Udaan's flatness module; open-loop feed-forward on the simulator reproduces the load path |
 | [x] 2.2 | Geometric controller, three modes: quad attitude → load attitude → load position | each mode stabilises from moderate errors; behaviour consistent with the paper's stability results |
 | [x] 2.3 | E1.1 Flatness study: ellipse x_L = (A_x sin 2πt/T₀, A_y cos 2πt/T₀, A_z), ψ = 0, T₀ = 10 → 1 s | reproduce the paper's Fig. 3 trend; find T₀ at which the X2's 13 N rotor limit is reached (new result) |
-| [ ] 2.4 | E1.2 Recovery: quad flipped 178°, load 178°, large position error | recovery and tracking; note whether rotor limits allow it on the X2 |
+| [x] 2.4 | E1.2 Recovery: quad flipped 178°, load 178°, large position error | recovery and tracking; note whether rotor limits allow it on the X2 |
 | [ ] 2.5 | E1.3 Benchmark subset: T0–T3 (D9) at nominal settings | first entries of the benchmark results table |
 | [ ] 2.6 | E1.4 Assumption-breaking: same controller on (a) slack cable C2, (b) L1 realism + CTBR + motor lag, (c) 0.25 m and 1.0 m cables | where Paper 1's assumptions fail → motivates later papers and the contribution |
 
@@ -71,3 +71,4 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 | 2026-11-01 | 2.1 Flatness map | F1–F6 pass (hover exact; EOM residual 1e-14; rates converge 4×; open-loop replay in MuJoCo within 1 cm for 2.9 s / >6 s / >6 s; Udaan agreement 1.1e-13; free-fall guard); 37/37 tests | ✅ |
 | 2026-11-01 | 2.2 Geometric controller | K1–K7 pass (attitude decay 28.4 vs 27/s; cable 7.6 vs 6.75/s; 1 m step settles 2.87 vs 2.83 s; tracking ≤ 0.17 mm; ablation flat 0.05 mm / numdiff 12.5 mm / zero 0.67 m); gains revised to 1.5/7.5/30 (F3); 46/46 tests | ✅ |
 | 2026-11-02 | 2.3 Ellipse study (E1.1) | A: Fig. 3 trend reproduced (tilt/torque grow as T₀ ↓, drone path shrinks inside load ellipse); B: X2 T₀\* = 2.12 s (0.5×1.0) / 2.61 s (1.0×2.0), size sweep monotone; C: X2 = ideal above T₀\*, diverges below; ideal fails at 1.5 s (bandwidth, F4); 49/49 tests | ✅ |
+| 2026-11-03 | 2.4 Recovery (E1.2) | ideal actuator 178°: all errors → 0, 5 cm at 5.1 s, rod pushes 9 % of run; X2: ≤ 10° recovers cleanly, ≥ 20° chaotic, falls up to 50 m (F5); 53/53 tests | ✅ |
