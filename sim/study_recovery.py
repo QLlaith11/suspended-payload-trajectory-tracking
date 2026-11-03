@@ -15,7 +15,7 @@ import numpy as np
 
 from .checks_flatness import params
 from .checks_geometric import _rot
-from .config import load_config
+from .config import deep_merge, load_config
 from .controllers.geometric_paper1 import Gains, GeometricController
 from .flatness import flat_state
 from .simulator import Simulator
@@ -31,8 +31,10 @@ BAND = 0.05            # [m] recovery band for the load position error
 HOLD = 2.0             # [s] must stay inside the band until the end, for at least this long
 
 
-def run_recovery(theta_deg: float, ideal: bool, duration: float = DURATION) -> dict:
-    cfg = load_config(overrides={"drone": {"ideal_actuator": True}} if ideal else {})
+def run_recovery(theta_deg: float, ideal: bool, duration: float = DURATION, extra: dict | None = None) -> dict:
+    """extra: config overrides (e.g. cable C2, step 2.6a)."""
+    over = deep_merge(extra or {}, {"drone": {"ideal_actuator": True}} if ideal else {})
+    cfg = load_config(overrides=over)
     sim = Simulator(cfg, cfg["rates"]["rate_loop_hz"])
     p = params(cfg)
     c = GeometricController(p, Gains.from_bandwidths(p), sim.control_dt)
@@ -75,18 +77,18 @@ def run_recovery(theta_deg: float, ideal: bool, duration: float = DURATION) -> d
             "min_tension_N": float(L["tension"].min()), "sat_frac": float(np.mean(L["sat"]))}
 
 
-def experiment_1() -> dict:
+def experiment_1(extra: dict | None = None) -> dict:
     """Paper 1 reproduction (ideal actuator): all errors -> 0, final position error < 1 cm, no blow-up."""
-    r = run_recovery(178.0, ideal=True)
+    r = run_recovery(178.0, ideal=True, extra=extra)
     S = r["series"]
     ok = (not r["diverged"] and r["final_err_m"] < 0.01 and S["Psi_R"][-1] < 1e-4 and S["Psi_q"][-1] < 1e-4)
     return {**r, "passed": bool(ok)}
 
 
-def experiment_2(angles=ANGLES) -> dict:
+def experiment_2(angles=ANGLES, extra: dict | None = None) -> dict:
     """X2 flip-angle sweep (new result, reported). Gate: only that every run finishes without numerical failure
     (NaN) - divergence of the drone itself is a valid outcome."""
-    runs = {a: run_recovery(a, ideal=False) for a in angles}
+    runs = {a: run_recovery(a, ideal=False, extra=extra) for a in angles}
     rec = [a for a, r in runs.items() if r["recovered"]]
     finite = all(np.all(np.isfinite(r["series"]["t"])) for r in runs.values())
     return {"runs": runs, "max_recovered_deg": float(max(rec)) if rec else float("nan"), "passed": bool(finite)}

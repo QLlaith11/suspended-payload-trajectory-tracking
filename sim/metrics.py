@@ -71,9 +71,11 @@ def compute_metrics(log: dict, dt_control: float, t_end: float | None = None, q_
 
     # Cable
     if "T" in log:
-        m["tension_min_N"] = float(log["T"].min())
-        m["tension_max_N"] = float(log["T"].max())
-        m["slack_fraction"] = float(np.mean(log["T"] <= 0.0))
+        # first tick excluded: a soft tendon limit (C2) starts exactly at length L and carries no force for one tick
+        Tn = log["T"][1:] if len(log["T"]) > 1 else log["T"]
+        m["tension_min_N"] = float(Tn.min())
+        m["tension_max_N"] = float(Tn.max())
+        m["slack_fraction"] = float(np.mean(Tn <= 0.0))
 
     # Effort and limits
     if "rotor_cmd" in log:

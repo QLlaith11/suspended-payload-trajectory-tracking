@@ -13,7 +13,7 @@ from . import trajectories as T
 from .actuators import Mixer
 from .checks_flatness import params
 from .checks_geometric import _rot
-from .config import load_config
+from .config import deep_merge, load_config
 from .controllers.geometric_paper1 import Gains, GeometricController
 from .flatness import flat_state, wrench
 from .logger import Logger
@@ -52,8 +52,9 @@ def flat_feasible(traj, duration, p, mixer, dt=0.01) -> dict:
             "flat_rotor_min": float(rot.min()), "flat_rotor_max": float(rot.max())}
 
 
-def run_case(traj, duration, swing0, gust, ideal: bool) -> tuple[dict, dict]:
-    cfg = load_config(overrides={"drone": {"ideal_actuator": True}} if ideal else {})
+def run_case(traj, duration, swing0, gust, ideal: bool, extra: dict | None = None) -> tuple[dict, dict]:
+    over = deep_merge(extra or {}, {"drone": {"ideal_actuator": True}} if ideal else {})
+    cfg = load_config(overrides=over)
     sim = Simulator(cfg, cfg["rates"]["rate_loop_hz"])
     p = params(cfg)
     c = GeometricController(p, Gains.from_bandwidths(p), sim.control_dt)
@@ -87,8 +88,8 @@ def run_case(traj, duration, swing0, gust, ideal: bool) -> tuple[dict, dict]:
     return m, L
 
 
-def run_all(names=None) -> dict:
-    cfg = load_config()
+def run_all(names=None, extra: dict | None = None) -> dict:
+    cfg = load_config(overrides=extra or {})
     sim = Simulator(cfg, cfg["rates"]["rate_loop_hz"])
     x0 = get_state(sim.model, sim.data).x_L
     p, mixer = params(cfg), Mixer(sim.info)
@@ -97,8 +98,8 @@ def run_all(names=None) -> dict:
         if names and name not in names:
             continue
         feas = flat_feasible(tr, dur, p, mixer)
-        mx, Lx = run_case(tr, dur, sw, gust, ideal=False)
-        mi, Li = run_case(tr, dur, sw, gust, ideal=True)
+        mx, Lx = run_case(tr, dur, sw, gust, ideal=False, extra=extra)
+        mi, Li = run_case(tr, dur, sw, gust, ideal=True, extra=extra)
         out[name] = {"feasibility": feas, "x2": mx, "ideal": mi, "log_x2": Lx, "log_ideal": Li}
     finished = all(np.all(np.isfinite(v["log_x2"]["x_L"])) and np.all(np.isfinite(v["log_ideal"]["x_L"]))
                    for v in out.values())
