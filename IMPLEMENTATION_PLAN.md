@@ -47,7 +47,7 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 | [x] 2.3 | E1.1 Flatness study: ellipse x_L = (A_x sin 2πt/T₀, A_y cos 2πt/T₀, A_z), ψ = 0, T₀ = 10 → 1 s | reproduce the paper's Fig. 3 trend; find T₀ at which the X2's 13 N rotor limit is reached (new result) |
 | [x] 2.4 | E1.2 Recovery: quad flipped 178°, load 178°, large position error | recovery and tracking; note whether rotor limits allow it on the X2 |
 | [x] 2.5 | E1.3 Benchmark subset: T0–T3 (D9) at nominal settings | first entries of the benchmark results table |
-| [ ] 2.6 | E1.4 Assumption-breaking: same controller on (a) slack cable C2, (b) L1 realism + CTBR + motor lag, (c) 0.25 m and 1.0 m cables | where Paper 1's assumptions fail → motivates later papers and the contribution |
+| [x] 2.6 | E1.4 Assumption-breaking: same controller on (a) slack cable C2, (b) L1 realism + CTBR + motor lag, (c) 0.25 m and 1.0 m cables | where Paper 1's assumptions fail → motivates later papers and the contribution |
 
 **Deliverable:** Paper 1 results report (figures, tables, what matched, what did not, why).
 
@@ -77,3 +77,4 @@ Setting: C1 + P1, ideal motors, L0 (perfect state), CTBM at 500 Hz, nominal 0.5 
 | 2026-11-03 | 2.6a Paper 1 on C2 | benchmark T0–T3 = C1 (≤ 0.03 mm); T5(a) throw recovers (0.88 s slack, settles 2.44 s, payload above drone); 178° ideal-actuator recovery diverges (cable cannot push); X2 sweep 7/19 recover (C1 14/19) (F7); tension metrics skip first tick | ✅ |
 | 2026-11-03 | 2.6b Cable length | 0.25 m works on all feasible cases; 1.0 m crashes on T0 swing 15°/30° (k_q ∝ l, F8); T₀\* 1.94 / 2.12 / 2.26 s; flat feasibility conservative | ✅ |
 | 2026-11-03 | 2.6c-1 L1 + CTBR build | R1–R8 pass (noise ≤ 1 %, delay exact, CTBR = Eq. 21 to 1e-14, runner = step 2.5 exactly, rate τ 17.5 vs 18.5 ms, drag quadratic + payload C_D 0.47, seeds reproducible); CTBR costs ff torque (F9); F1 resolved; 66/66 tests | ✅ |
+| 2026-11-04 | 2.6c-2 L1 one-factor study | 990 runs: nominal gains fail under sensor noise (0 %, velocity noise is the cause), lag breaks swing recovery only; lag-compatible gains never crash but cannot damp swing (F10); checkpoint/resume added | ✅ |

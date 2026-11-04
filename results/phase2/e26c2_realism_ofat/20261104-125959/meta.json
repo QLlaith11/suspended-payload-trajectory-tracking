@@ -1,0 +1,20 @@
+{
+  "phase": "phase2",
+  "experiment": "e26c2_realism_ofat",
+  "git": {
+    "commit": "71d2d50f006ad0f798fec2990f50ea6c59d11682",
+    "dirty": true
+  },
+  "versions": {
+    "python": "3.10.12",
+    "mujoco": "3.17.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1",
+    "matplotlib": "3.5.1",
+    "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35"
+  },
+  "command": "experiments/e26c2_realism_ofat.py --seeds=20 --workers=3",
+  "started": "2026-11-04 12:59:59",
+  "finished": "2026-11-04 15:05:04",
+  "wall_time_s": 7504.382
+}

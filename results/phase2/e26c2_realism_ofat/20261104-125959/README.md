@@ -1,0 +1,35 @@
+# phase2 / e26c2_realism_ofat
+
+Step 2.6c-2: Paper 1 controller, one-factor-at-a-time L1 realism (lag, delay, noise, drag, CTBR, all), gain sets nominal 1.5/7.5/30 and lag-compatible 0.4/2/10, 11 feasible T0-T3 cases, 20 seeds for noisy settings.
+
+- Started: 2026-11-04 12:59:59  (wall time 7504.382 s)
+- Code: commit `71d2d50f006ad0f798fec2990f50ea6c59d11682`  **(uncommitted changes present)**
+- Command: `experiments/e26c2_realism_ofat.py --seeds=20 --workers=3`
+- MuJoCo 3.17.0, Python 3.10.12
+
+## Metrics
+
+| metric | value |
+|---|---|
+| nominal.base | {'runs': 11, 'success_rate': 1.0, 'crashed': 0, 'max_err_median': 0.00015488356531193211, 'max_err_p20': 8.186592891470122e-06, 'max_err_p80': 0.13952738988149824, 'worst_case': 'T0_gust'} |
+| nominal.lag | {'runs': 11, 'success_rate': 0.8181818181818182, 'crashed': 2, 'max_err_median': 0.005723620897491189, 'max_err_p20': 0.00031086644827136163, 'max_err_p80': 0.33222773703000885, 'worst_case': 'T0_swing30'} |
+| nominal.delay | {'runs': 11, 'success_rate': 0.9090909090909091, 'crashed': 1, 'max_err_median': 0.0017600655664571634, 'max_err_p20': 9.192381860000047e-05, 'max_err_p80': 0.1631067028669461, 'worst_case': 'T0_swing30'} |
+| nominal.noise | {'runs': 220, 'success_rate': 0.0, 'crashed': 220, 'max_err_median': 18.347364652675584, 'max_err_p20': 5.7637568318667824, 'max_err_p80': 169.2207235940803, 'worst_case': 'T3_15s'} |
+| nominal.drag | {'runs': 11, 'success_rate': 1.0, 'crashed': 0, 'max_err_median': 0.006478588729852905, 'max_err_p20': 0.0021443273276548977, 'max_err_p80': 0.13934751349297336, 'worst_case': 'T0_gust'} |
+| nominal.ctbr | {'runs': 11, 'success_rate': 1.0, 'crashed': 0, 'max_err_median': 0.0036422811400247204, 'max_err_p20': 0.00036694510874783824, 'max_err_p80': 0.13777550393412574, 'worst_case': 'T0_gust'} |
+| nominal.all | {'runs': 220, 'success_rate': 0.0, 'crashed': 220, 'max_err_median': 102.3708832082695, 'max_err_p20': 73.06157102038972, 'max_err_p80': 151.81812474097103, 'worst_case': 'T3_15s'} |
+| lagcompat.base | {'runs': 11, 'success_rate': 0.7272727272727273, 'crashed': 0, 'max_err_median': 0.0028815439706948907, 'max_err_p20': 4.837426012216021e-05, 'max_err_p80': 3.4842845688641053, 'worst_case': 'T0_swing30'} |
+| lagcompat.lag | {'runs': 11, 'success_rate': 0.6363636363636364, 'crashed': 0, 'max_err_median': 0.10863019029321001, 'max_err_p20': 0.0017172834593823655, 'max_err_p80': 3.446936027474237, 'worst_case': 'T0_swing30'} |
+| lagcompat.delay | {'runs': 11, 'success_rate': 0.7272727272727273, 'crashed': 0, 'max_err_median': 0.03281608386776475, 'max_err_p20': 0.0005345599043387286, 'max_err_p80': 3.475043432244893, 'worst_case': 'T0_swing30'} |
+| lagcompat.noise | {'runs': 220, 'success_rate': 0.2772727272727273, 'crashed': 0, 'max_err_median': 0.6064486332339503, 'max_err_p20': 0.4480231813742277, 'max_err_p80': 3.632284467780694, 'worst_case': 'T0_swing30'} |
+| lagcompat.drag | {'runs': 11, 'success_rate': 0.7272727272727273, 'crashed': 0, 'max_err_median': 0.09803759912368104, 'max_err_p20': 0.06187069832532014, 'max_err_p80': 3.3104780992420757, 'worst_case': 'T0_swing30'} |
+| lagcompat.ctbr | {'runs': 11, 'success_rate': 0.6363636363636364, 'crashed': 0, 'max_err_median': 0.29922934873494295, 'max_err_p20': 0.05095947758680252, 'max_err_p80': 3.5564367473061407, 'worst_case': 'T0_swing30'} |
+| lagcompat.all | {'runs': 220, 'success_rate': 0.004545454545454545, 'crashed': 0, 'max_err_median': 1.160936886138059, 'max_err_p20': 0.8084593144858634, 'max_err_p80': 3.708193682521746, 'worst_case': 'T0_gust'} |
+| all_passed | True |
+
+## Figures
+
+
+## Notes
+
+Reported, not gated. runs.json holds every run; results_table.md the summaries.
