@@ -1,0 +1,134 @@
+<title>Paper 1 on the Skydio X2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: technical report, single reading column; findings as a numbered register (F-numbers are the project's own IDs); figures full-width on white plates. */
+:root {
+  --bg: #f6f7f5; --surface: #ffffff; --fg: #1c2120; --muted: #5d6765; --line: #dde2df;
+  --accent: #23606b; --accent-soft: #e2eff0; --bad: #a23b2a; --bad-soft: #f8e6e2; --good: #2f6b3a; --good-soft: #e4f1e5;
+  --serif: "Source Serif 4", Georgia, serif; --sans: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121514; --surface: #1a1f1e; --fg: #e2e7e5; --muted: #98a3a0; --line: #2b3331;
+  --accent: #74c0c9; --accent-soft: #1a3033; --bad: #ec8a78; --bad-soft: #3a211c; --good: #8fd09a; --good-soft: #1d3020; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121514; --surface: #1a1f1e; --fg: #e2e7e5; --muted: #98a3a0; --line: #2b3331;
+  --accent: #74c0c9; --accent-soft: #1a3033; --bad: #ec8a78; --bad-soft: #3a211c; --good: #8fd09a; --good-soft: #1d3020; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--serif); font-size: 17px; line-height: 1.65; }
+.wrap { max-width: 820px; margin: 0 auto; padding-block: 36px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-family: var(--sans); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+h1 { font-size: 2.1rem; line-height: 1.2; margin: 6px 0 10px; text-wrap: balance; }
+.byline { font-family: var(--sans); color: var(--muted); font-size: .9rem; margin: 0 0 22px; }
+h2 { font-size: 1.45rem; margin: 40px 0 10px; padding-top: 18px; border-top: 1px solid var(--line); text-wrap: balance; }
+h3 { font-family: var(--sans); font-size: 1rem; font-weight: 600; margin: 22px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 1.3em; } li { margin-bottom: 5px; }
+code, .m { font-family: var(--mono); font-size: .86em; }
+.abstract { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; }
+.abstract p:last-child { margin: 0; }
+.tbl { overflow-x: auto; margin: 12px 0 16px; }
+table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: .86rem; font-variant-numeric: tabular-nums; }
+th, td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 500; white-space: nowrap; }
+td.n { text-align: right; white-space: nowrap; }
+.pill { font-family: var(--sans); font-size: .76rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.ok { background: var(--good-soft); color: var(--good); } .no { background: var(--bad-soft); color: var(--bad); }
+figure { margin: 16px 0 20px; }
+figure .plate { background: #ffffff; border: 1px solid var(--line); border-radius: 6px; padding: 8px; overflow-x: auto; }
+figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+figcaption { font-family: var(--sans); font-size: .84rem; color: var(--muted); margin-top: 6px; }
+.finding { display: grid; grid-template-columns: 3.2em 1fr; gap: 4px 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.finding .id { font-family: var(--mono); color: var(--accent); font-weight: 500; padding-top: 2px; }
+.finding > div { min-width: 0; }
+.finding b { font-family: var(--sans); font-weight: 600; }
+.gap { background: var(--accent-soft); border-radius: 8px; padding: 14px 18px; }
+footer { font-family: var(--sans); color: var(--muted); font-size: .82rem; margin-top: 40px; }
+</style>
+
+<div class="wrap">
+<p class="eyebrow">Phase 2 report · Paper 1 reproduction and stress test</p>
+<h1>Geometric control of a cable-suspended payload on a realistic quadrotor model</h1>
+<p class="byline">Haidar Saad · advisor Prof. Andry · 4 November 2026 · simulation in MuJoCo 3.17, Skydio X2 (MuJoCo Menagerie) · code: github.com/haidar996/suspended-payload-trajectory-tracking</p>
+
+<div class="abstract">
+<p><b>Summary.</b> We reimplemented Sreenath, Lee &amp; Kumar (CDC 2013), the differential-flatness map and the geometric controller for a quadrotor carrying a point-mass load on a rigid massless cable, and ran it on a realistic simulated drone: the Skydio X2 with 0–13 N rotors. Under the paper's own assumptions every result reproduces (flatness to 1e-13 against an independent implementation, sub-millimetre tracking, recovery from a 178° flip). Each assumption we then removed broke something specific: rotor limits cap the attitude bandwidth and make large-angle recovery chaotic; a cable that can go slack makes the 178° recovery diverge; a 1 m cable crashes on a 15° initial swing with the published gain scaling; and mocap-level velocity noise crashes every run because the controller has no estimator. A 35 ms motor lag breaks swing recovery, and slowing the gains to tolerate it leaves the swing undamped. These are the gaps the next papers, and the planned contribution, address.</p>
+</div>
+
+<h2>1. Setup</h2>
+<div class="tbl"><table>
+<tr><th>Item</th><th>Choice</th><th>Reason</th></tr>
+<tr><td>Simulator</td><td>MuJoCo 3.17, RK4, 1 ms (0.5 ms for slack cable)</td><td>contacts off; RK4 accuracy verified by convergence tests</td></tr>
+<tr><td>Drone</td><td>Skydio X2, Menagerie, 1.465 kg, 0–13 N per rotor</td><td>no real drone available; realistic inertia and rotor limits</td></tr>
+<tr><td>Cable / payload</td><td>C1 rigid massless link, 0.5 m; C2 slack-capable tendon; point mass 0.2 kg</td><td>C1 is Paper 1's model; C2 removes the "always taut" assumption</td></tr>
+<tr><td>Controller</td><td>Paper 1, Eqs. 17–38, load-position mode, flatness feed-forward</td><td>own implementation; flatness cross-checked against Udaan (1.1e-13)</td></tr>
+<tr><td>Gains</td><td>bandwidths 1.5 / 7.5 / 30 rad/s (position / cable / attitude), ζ = 0.9</td><td>F3: needs ≈ 5× separation; X2 rotors cap attitude at ≈ 30 rad/s</td></tr>
+<tr><td>Control rates</td><td>500 Hz (CTBM); 100 Hz outer + 500 Hz rate loop (CTBR)</td><td>design decision D5 / D8</td></tr>
+<tr><td>Realism L1</td><td>noise pos 1 cm, vel 5 cm/s, att 1°, gyro 0.05 rad/s; delay 10 ms; drag; motor lag 35 ms</td><td>design decision D10, literature values</td></tr>
+</table></div>
+
+<h2>2. What matched Paper 1</h2>
+<ul>
+<li><b>Differential flatness.</b> Exact derivatives to 6th order by jet arithmetic; equation-of-motion residual 1e-14; agreement with Udaan 1.1e-13; open-loop replay in MuJoCo within 1 cm for 3–6 s.</li>
+<li><b>Controller modes.</b> Attitude error decay 28.4 vs 27 /s predicted; cable decay 7.6 vs 6.75 /s; 1 m step settles in 2.87 s vs 2.83 s from linear design.</li>
+<li><b>Tracking.</b> Circle, figure-8 and point-to-point references tracked to ≤ 0.17 mm. Ablation: flatness feed-forward 0.05 mm RMSE, numerical differentiation 12.5 mm, none 0.67 m.</li>
+<li><b>Fig. 3 trend.</b> As the period T₀ of the load ellipse shrinks, the required drone motion becomes far more aggressive (below ≈ 1.25 s the drone must tilt past 90°).</li>
+<li><b>Fig. 4–5 recovery.</b> From a 178° flip of drone and cable, all errors converge to zero (inside 5 cm at 5.1 s), with unlimited thrust and a rigid cable.</li>
+</ul>
+<figure><div class="plate"><img src="{{img:results/phase2/e23_ellipse_study/20261102-183504/A_fig3_reproduction.png}}" alt="Drone paths required for one load ellipse at periods from 10 s to 1 s"></div>
+<figcaption>Fig. 1 — Paper 1 Fig. 3 reproduced: drone paths (colour) needed for the same 0.5 × 1.0 m load ellipse (black), T₀ = 10 … 1 s. The drone flies an inner, lower path as the load swings outward.</figcaption></figure>
+<figure><div class="plate"><img src="{{img:results/phase2/e24_recovery/20261103-111333/E1_paper1_recovery.png}}" alt="Errors converging after a 178 degree flip"></div>
+<figcaption>Fig. 2 — Paper 1 recovery, 178° flip, unlimited thrust, rigid cable: attitude, cable and position errors all converge. Right: the rigid link pushes the load (negative tension) for ≈ 1 s.</figcaption></figure>
+
+<h2>3. What changes on a realistic drone</h2>
+<p>Each finding below removes one assumption of Paper 1. IDs refer to the project's design log (SIMULATION_DESIGN.md).</p>
+
+<div class="finding"><span class="id">F3</span><div><b>Rotor limits cap the attitude bandwidth.</b> With 3× loop separation the cascade is lightly damped; the paper's singular-perturbation argument needs ≈ 5×. At 40–60 rad/s attitude bandwidth a 30° swing saturates the X2 rotors and the drone diverges, so 30 rad/s is the ceiling and the outer loops follow at 7.5 and 1.5 rad/s.</div></div>
+<div class="finding"><span class="id">F4</span><div><b>The X2 has a speed limit, and so does the controller.</b> The shortest ellipse period the X2 rotors allow is T₀* = 2.12 s (0.5 × 1.0 m; load 3.0 m/s, 8.8 m/s²) and 2.61 s (1.0 × 2.0 m). Above it the X2 tracks exactly like an ideal actuator; slightly below, the mixer still copes; further below it crashes. At T₀ = 1.5 s even unlimited thrust fails: the reference needs ≈ 62 rad/s body rates, beyond the 30 rad/s attitude loop.</div></div>
+<div class="finding"><span class="id">F5</span><div><b>Large-angle recovery is chaotic under rotor limits.</b> The controller asks for 15–46 N m against ≈ 2 N m available. Flips of 0–10° recover cleanly; from 20° the outcome flips between success and failure with 1° changes (30° fails, 31° recovers), and recoveries lose 1–9 m of height.</div></div>
+<div class="finding"><span class="id">F6</span><div><b>A slack cable in simulation.</b> The C2 tendon reproduces C1 to 0.1 mm while taut, gives exactly zero tension and ballistic flight while slack. The peak tension at a snap is not physical for an inextensible cable (it is set by numerical softness); the snap impulse is, and it converges at 0.5 ms.</div></div>
+<div class="finding"><span class="id">F7</span><div><b>Paper 1's recovery relies on the cable pushing.</b> On C2, all taut benchmark cases match C1 to 0.03 mm, and a payload thrown upward at 3 m/s is recovered in 2.4 s. But the 178° recovery diverges even with unlimited thrust: with the load above the drone and the cable slack, thrust no longer acts on the load and the drone is launched ≈ 21 m in 0.1 s. Flip-sweep recoveries drop from 14/19 to 7/19.</div></div>
+<div class="finding"><span class="id">F8</span><div><b>Bandwidth-based gains do not transfer across cable lengths.</b> 0.25 m works everywhere. At 1.0 m the cable gain k_q ∝ l doubles the restoring force, and a 15° initial swing flips the X2 (30° fails even with unlimited thrust). The X2 speed limit also falls with length: T₀* = 1.94 / 2.12 / 2.26 s for 0.25 / 0.5 / 1.0 m.</div></div>
+<div class="finding"><span class="id">F9</span><div><b>A body-rate interface drops the feed-forward torque.</b> Paper 1's attitude law equals a P attitude loop inside a P rate loop exactly (1e-14 N m), except the Ω̇_c feed-forward, which a thrust-plus-rates command cannot carry: tracking error grows from 0.17 mm to 3–3.6 mm.</div></div>
+<div class="finding"><span class="id">F10</span><div><b>Realistic sensing and actuation.</b> One factor at a time, 990 runs, 20 seeds for noisy settings. Motor lag 35 ms breaks swing recovery only; delay, drag and the rate interface have small effects. Sensor noise crashes every run (220/220): the cause is velocity noise, because the controller forms the cable rate from two raw velocities and passes it through the 30 rad/s attitude loop. Gains slow enough for the lag (0.4 / 2 / 10 rad/s) never crash, but cannot damp a 30° swing.</div></div>
+
+<h3>Benchmark summary, Paper 1 controller on the X2</h3>
+<div class="tbl"><table>
+<tr><th>Condition</th><th>Success</th><th>Typical max error</th><th>What fails</th></tr>
+<tr><td>Nominal: rigid cable 0.5 m, perfect state, ideal motors</td><td><span class="pill ok">11 / 11 feasible cases</span></td><td class="n">0.01–0.45 mm tracking</td><td>only the infeasible 1 m in 1 s move and a severe 2 N gust</td></tr>
+<tr><td>Slack-capable cable (C2)</td><td><span class="pill ok">same as nominal</span></td><td class="n">within 0.03 mm of C1</td><td>large-angle recovery (F7)</td></tr>
+<tr><td>Cable 0.25 m</td><td><span class="pill ok">all feasible</span></td><td class="n">≤ 0.7 mm</td><td>—</td></tr>
+<tr><td>Cable 1.0 m</td><td><span class="pill no">fails T0 swing</span></td><td class="n">3 m on 15° swing</td><td>initial-swing cases (F8)</td></tr>
+<tr><td>Motor lag 35 ms</td><td><span class="pill no">82 %</span></td><td class="n">5.7 mm median</td><td>swing recovery (F10)</td></tr>
+<tr><td>Sensor noise (D10)</td><td><span class="pill no">0 %</span></td><td class="n">crash</td><td>every run (F10)</td></tr>
+<tr><td>Full L1 (noise + delay + drag + lag + rate interface)</td><td><span class="pill no">0 %</span></td><td class="n">crash</td><td>every run</td></tr>
+</table></div>
+<figure><div class="plate"><img src="{{img:results/phase2/e23_ellipse_study/20261102-183504/C_closed_loop.png}}" alt="Closed-loop error versus ellipse period for X2 and ideal actuator"></div>
+<figcaption>Fig. 3 — Closed-loop load error vs ellipse period, X2 (orange) and unlimited thrust (blue); dotted line is the X2 feasibility boundary T₀* (F4).</figcaption></figure>
+<figure><div class="plate"><img src="{{img:results/phase2/e24_recovery/20261103-111333/E2_x2_sweep.png}}" alt="Recovery time, height loss and saturation versus flip angle on the X2"></div>
+<figcaption>Fig. 4 — Recovery on the X2 vs initial flip angle (rigid cable): recovered runs (green), failures (red), height lost and rotor saturation (F5).</figcaption></figure>
+<figure><div class="plate"><img src="{{img:results/phase2/e26a_paper1_on_c2/20261103-130827/paper1_on_c2.png}}" alt="Paper 1 controller on the slack-capable cable"></div>
+<figcaption>Fig. 5 — Slack-capable cable C2: divergence of the 178° recovery with unlimited thrust, the X2 flip sweep, and the upward-throw test with its slack phase (F7).</figcaption></figure>
+
+<h2>4. Limits of this study</h2>
+<ul>
+<li>Noise is applied as independent white noise at every 500 Hz tick. Filtered motion-capture data is smoother, so F10's severity depends on this assumption; the qualitative need for an estimator does not.</li>
+<li>The 35 ms motor time constant comes from another platform; the X2's is not identified. It is randomised in later robustness tests.</li>
+<li>Gains were not re-tuned per condition, on purpose: the study tests Paper 1 as published. Systematic tuning follows the agreed protocol (D12) in Phase 3.</li>
+<li>No rotor downwash on the payload and no ground effect, as in the reference papers.</li>
+</ul>
+
+<h2>5. Gaps for the next phases</h2>
+<div class="gap">
+<ol>
+<li><b>Actuator-aware control.</b> A controller that respects 0–13 N per rotor instead of assuming unlimited thrust (F3, F4, F5).</li>
+<li><b>Slack-aware recovery.</b> Handling the cable's pull-only nature, especially when the load is above the drone (F7).</li>
+<li><b>State estimation.</b> Paper 3's Kalman filter is the natural next test against F10.</li>
+<li><b>Length-robust gains.</b> One design that works from 0.25 m to 1.0 m without retuning (F8).</li>
+<li><b>Lag-compatible swing damping.</b> Meeting the 35 ms motor lag and the payload swing frequency at the same time, which the cascade structure cannot do by retuning alone (F10).</li>
+</ol>
+<p style="margin:0">Next: Paper 2 (survey) defines baselines and the tuning protocol; Paper 3 (LQR + Kalman filter, elastic cable C3) is then tested on the same benchmark.</p>
+</div>
+
+<footer>All numbers come from the committed result folders in results/phase2/ and the design log SIMULATION_DESIGN.md (findings F1–F10). Each step was validated by explicit gates and 66 automated tests.</footer>
+</div>
